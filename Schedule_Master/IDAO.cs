@@ -33,31 +33,6 @@ namespace Schedule_Master
             LoadFiles();
         }
 
-        public UserModel GetUserByID(int id)
-        {
-            return Users.FirstOrDefault(u => u.ID == id);
-        }
-
-        public ScheduleModel GetScheduleByID(int id)
-        {
-            return Schedules.FirstOrDefault(s => s.ID == id);
-        }
-
-        public ColumnModel GetColumnByID(int id)
-        {
-            return Columns.FirstOrDefault(c => c.ID == id);
-        }
-
-        public SlotModel GetSlotByID(int id)
-        {
-            return Slots.FirstOrDefault(s => s.ID == id);
-        }
-
-        public TaskModel GetTaskByID(int id)
-        {
-            return Tasks.FirstOrDefault(t => t.ID == id);
-        }
-
         private void LoadFiles()
         {
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
