@@ -12,6 +12,8 @@ namespace Schedule_Master.Models
         public int Task_ID { get; }
         public int HourValue { get; }
 
+        public TaskModel Task { get; }
+
         public SlotModel(int id, int columnid, int taskid, int hour)
         {
             ID = id;

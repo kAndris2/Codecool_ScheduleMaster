@@ -11,6 +11,8 @@ namespace Schedule_Master
 {
     public class Program
     {
+        public static readonly string ConnectionString = $"Host=mradmin.hu;Username=andris;Password=123qweAsD;Database=Schedule_Master";
+
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
