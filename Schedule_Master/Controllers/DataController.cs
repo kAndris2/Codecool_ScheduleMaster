@@ -13,15 +13,19 @@ namespace Schedule_Master.Controllers
     {
         IDAO Singleton = IDAO.Singleton;
 
-        [HttpGet]
+        [HttpGet("GetUsers")]
         public List<UserModel> GetUsers() { return Singleton.Users; }
-        [HttpGet]
+
+        [HttpGet("GetSchedules")]
         public List<ScheduleModel> GetSchedules() { return Singleton.Schedules; }
-        [HttpGet]
+
+        [HttpGet("GetColumns")]
         public List<ColumnModel> GetColumns() { return Singleton.Columns; }
-        [HttpGet]
+
+        [HttpGet("GetSlots")]
         public List<SlotModel> GetSlots() { return Singleton.Slots; }
-        [HttpGet]
+
+        [HttpGet("GetTasks")]
         public List<TaskModel> GetTasks() { return Singleton.Tasks; }
     }
 }
