@@ -19,7 +19,7 @@ function getUsers() {
 
     $.getJSON(uri)
         .done(function (data) {
-            //$("#products").empty();
+            $("#products").empty();
             // On success, 'data' contains a list of products.
             $.each(data, function (key, item) {
                 // Add a list item for the product.

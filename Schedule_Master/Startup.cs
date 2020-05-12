@@ -46,6 +46,7 @@ namespace Schedule_Master
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
