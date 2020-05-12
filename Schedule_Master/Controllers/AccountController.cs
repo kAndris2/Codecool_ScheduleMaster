@@ -13,8 +13,10 @@ using Schedule_Master.Models;
 using Schedule_Master;
 using Schedule_Master.Services;
 
-namespace UsedCars.Controllers
+namespace Schedule_Master.Controllers
 {
+   
+    [Route("[controller]")]
     public class AccountController : Controller
     {
         IDAO IDAO = IDAO.Singleton;
@@ -40,9 +42,14 @@ namespace UsedCars.Controllers
             public List<string> errors { get; set; }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        [HttpPost ("Register")]
+        public ActionResult Register(string[] regdata)
         {
+            RegisterViewModel model = new RegisterViewModel();
+            model.Username = regdata[0];
+            model.Email = regdata[1];
+            model.Password = regdata[2];
+            model.ConfirmPassword = regdata[3];
             if (ModelState.IsValid)
             {
                 List<UserModel> users = IDAO.Users;
@@ -65,58 +72,58 @@ namespace UsedCars.Controllers
                 if (err)
                 {
                     model.errors = newErrors;
-                    return View(model);
+                    return View("index.html");
                 }
                 else
                 {
                     IDAO.Register(model.Username, model.Email, model.Password);
-                    await LoginAsync(model.Email, model.Password);
-                    return View("RegSuccess");
+                    //await LoginAsync(model.Email, model.Password);
+                    return View("index.html");
                 }
             }
-            else { return View(); }
+            else { return View("index.html"); }
         }
         //logintest--------------------------------------------------------------------------------------------------------------
-        private readonly ILogger<AccountController> _logger;
+        //private readonly ILogger<AccountController> _logger;
 
-        private readonly IUserService _userService;
+        //private readonly IUserService _userService;
 
-        public AccountController(ILogger<AccountController> logger, IUserService userService)
-        {
-            _userService = userService;
-        }
+        //public AccountController(ILogger<AccountController> logger, IUserService userService)
+        //{
+        //    _userService = userService;
+        //}
 
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult Login()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public async Task<ActionResult> LoginAsync([FromForm] string email, [FromForm] string password)
-        {
-            UserModel user = _userService.Login(email, password);
-            if (user == null)
-            {
-                List<string> errors = new List<string>
-                {
-                    "Invalid e-mail/password!"
-                };
-                ErrorViewModel err = new ErrorViewModel
-                {
-                    Error = errors
-                };
-                return View(err);
+        //[HttpPost]
+        //public async Task<ActionResult> LoginAsync([FromForm] string email, [FromForm] string password)
+        //{
+        //    UserModel user = _userService.Login(email, password);
+        //    if (user == null)
+        //    {
+        //        List<string> errors = new List<string>
+        //        {
+        //            "Invalid e-mail/password!"
+        //        };
+        //        ErrorViewModel err = new ErrorViewModel
+        //        {
+        //            Error = errors
+        //        };
+        //        return View(err);
 
-            }
+        //    }
 
-            var claims = new List<Claim> { new Claim(ClaimTypes.Email, user.Email) };
+            //var claims = new List<Claim> { new Claim(ClaimTypes.Email, user.Email) };
 
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            //var claimsIdentity = new ClaimsIdentity(
+            //    claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            var authProperties = new AuthenticationProperties
-            {
+            //var authProperties = new AuthenticationProperties
+           // {
                 //AllowRefresh = <bool>,
                 // Refreshing the authentication session should be allowed.
 
@@ -137,22 +144,22 @@ namespace UsedCars.Controllers
                 //RedirectUri = <string>
                 // The full path or absolute URI to be used as an http 
                 // redirect response value.
-            };
+    //        };
 
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
+        //    await HttpContext.SignInAsync(
+        //        CookieAuthenticationDefaults.AuthenticationScheme,
+        //        new ClaimsPrincipal(claimsIdentity),
+        //        authProperties);
 
-            return RedirectToAction("Index", "Home");
-        }
+        //    return RedirectToAction("Index", "Home");
+        //}
 
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> LogoutAsync()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
-        }
+    //    [Authorize]
+    //    [HttpGet]
+    //    public async Task<IActionResult> LogoutAsync()
+    //    {
+    //        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    //        return RedirectToAction("Login", "Account");
+    //    }
     }
 }

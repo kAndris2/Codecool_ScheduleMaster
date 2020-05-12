@@ -33,14 +33,23 @@ function formatItem(item) {
 
 
 
+function test() {
+    $.post("/Account/Register", { 'regdata' : ['usher','mail@asd.com','pass','pass'] }, function (data) {
+        alert(data);
+    });
+
+    
+}
 
 $(document).ready(function () {
+    jQuery.ajaxSettings.traditional = true;
     $('#registerModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
-        var recipient = button.data('whatever')
+        //var recipient = button.data('whatever')
         var modal = $(this)
-        modal.find('.modal-title').text('New message to ' + recipient)
-        modal.find('.modal-body input').val(recipient)
+        modal.find('.modal-title').text('Registration')
+
+        
+        
     })
-    
 });
