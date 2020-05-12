@@ -20,6 +20,11 @@ namespace Schedule_Master
         //SELECT ... FROM table
         //    WHERE password is NOT NULL
         //        AND password = crypt('password-to-test', password);
+        //PL.:
+        //SELECT name FROM users
+        //    WHERE password is NOT NULL
+        //        AND password = crypt('password', password);
+        //RETURNS: => testuser
 
         static IDAO instance = null;
         public static IDAO Singleton
