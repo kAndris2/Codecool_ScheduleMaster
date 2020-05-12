@@ -1,17 +1,46 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8" />
-    <title></title>
-
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
-    
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Sample page</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- links -->
+    <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <script src="https://kit.fontawesome.com/e1f7535694.js" crossorigin="anonymous"></script>
+    <script src='js/main.js'></script>
 </head>
-<body>
 
-    <h1>Halóóóóóóóóóóóóóóóóóó</h1>
-    <input type="button" value="Get Users" onclick="getUsers();"/>
-    <ul id="products" />
-    <script src="js/single.js"></script>
+<body>
+    <!-- MAIN -->
+    <div class="sm-main">
+        <p>very nice</p>
+    </div>
+    <!-- SIDEBAR -->
+    <div class="sm-sidenavbar">
+        <!-- <div class="sm-container">
+            <i class="fas fa-exclamation fa-3x"></i>
+            <h1>You haven't registered yet!</h1>
+            <button class="sm-btn-navitem">Register</button>
+        </div> -->
+
+        <div class="sm-container">
+            <i class="fas fa-user fa-2x mt-3 mb-3"></i>
+            <p>Welcome, <strong>geza69</strong></p>
+            <button class="sm-btn">Logout</button>
+        </div>
+        <!-- <hr> -->
+        <div class="sm-bar-block">
+            <button class="sm-btn-nav"><i class="fas fa-tasks ml-3 mr-3"></i>New schedule</button>
+            <button class="sm-btn-nav" onclick="toggleDropDown()">
+                <i class="fas fa-cog ml-3 mr-3 animate-icon"></i>
+                Edit schedules</button>
+            <button class="sm-btn-nav"><i class="fas fa-sign-out-alt ml-3 mr-3"></i>Sign out</button>
+        </div>
+    </div>
 </body>
-</html >
+
+</html>

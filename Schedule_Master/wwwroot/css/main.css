@@ -1,0 +1,94 @@
+
+body
+{
+    line-height: 1.15;
+    margin: 0;
+    font-family: "Raleway", sans-serif !important;
+}
+
+button
+{
+    outline: none !important;
+    border: none !important;
+    transition: 0.25s cubic-bezier(0, .54, .51, 1);
+}
+
+.sm-main
+{
+    margin-left: 340px;     /* highly depends on the width of the navbar */
+}
+
+.sm-container
+{
+    padding: 32px 16px;
+    text-align: center;
+    width: 100%;
+}
+
+.sm-bar-block
+{
+    display: block;
+}
+
+.sm-sidenavbar
+{
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 330px;   /* change this too */
+    position: fixed;
+    background-color: rgb(255, 255, 255);
+    overflow-x: hidden;
+    z-index: 1;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.26);
+}
+
+.sm-btn-nav
+{
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, .05);
+    text-align: left;
+    width: 100%;
+    padding: 8px;
+}
+
+.sm-btn-nav:hover, .sm-btn:hover
+{
+    background-color: rgba(0, 195, 255, 0.315);
+}
+
+.sm-btn-nav:active, .sm-btn:active
+{
+    color: white;
+    background-color: rgba(0, 0, 0, 0.2);
+    transform: scale(.96);
+}
+
+.sm-btn-nav:focus, .sm-btn:focus
+{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.sm-flexbox
+{
+    display: flexbox;
+}
+
+.sm-btn
+{
+    padding: 8px;
+    min-width: 100px;
+    font-weight: bold;
+    border-radius: 16px;
+    background-color: rgba(0, 0, 0, .05);
+}
+
+.animate-icon
+{
+    transition: 0.5s;
+}
+
+.spin
+{
+    transform: rotate(-90deg);
+}
