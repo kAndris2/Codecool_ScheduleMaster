@@ -50,6 +50,42 @@ namespace Schedule_Master
             LoadFiles();
         }
 
+        public void Register(string name, string email, string password)
+        {
+            int id = 0;
+            string sqlstr = "INSERT INTO users " +
+                                "(name, email, password, rank) " +
+                                "VALUES " +
+                                    "(@name, @email, @password, @rank)";
+            using (var conn = new NpgsqlConnection(Program.ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand(sqlstr, conn))
+                {
+                    cmd.Parameters.AddWithValue("name", name);
+                    cmd.Parameters.AddWithValue("email", email);
+                    cmd.Parameters.AddWithValue("password", password);
+                    cmd.ExecuteNonQuery();
+                }
+                id = int.Parse(GetLastIDFromTable(conn, "users"));
+            }
+            Users.Add(new UserModel(id, name, email, password));
+        }
+
+        public String GetLastIDFromTable(NpgsqlConnection connection, string table)
+        {
+            string value = "";
+            using (var cmd = new NpgsqlCommand($"SELECT * FROM {table}", connection))
+            {
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    value = reader["id"].ToString();
+                }
+            }
+            return value;
+        }
+
         private void LoadFiles()
         {
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
