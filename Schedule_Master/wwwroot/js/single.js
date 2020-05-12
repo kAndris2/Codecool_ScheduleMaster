@@ -8,26 +8,38 @@
 //xhr.open('GET', '/Data/GetSchedules');
 //xhr.send();
 
-
-$(document).ready(function () {
-    
-
-});
-
 function getUsers() {
     var uri = 'Data/GetUsers';
 
     $.getJSON(uri)
         .done(function (data) {
-            //$("#products").empty();
+            $("#users").empty();
             // On success, 'data' contains a list of products.
             $.each(data, function (key, item) {
                 // Add a list item for the product.
-                $('<li>', { text: formatItem(item) }).appendTo($('#products'));
+                $('<li>', { text: formatItem(item) }).appendTo($('#users'));
             });
         });
+}
+
+function getSchedules() {
+    var uri = 'Data/GetSchedules';
 }
 
 function formatItem(item) {
     return item.name + ' email ' + item.email;
 }
+
+
+
+
+$(document).ready(function () {
+    $('#registerModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('whatever')
+        var modal = $(this)
+        modal.find('.modal-title').text('New message to ' + recipient)
+        modal.find('.modal-body input').val(recipient)
+    })
+    
+});
