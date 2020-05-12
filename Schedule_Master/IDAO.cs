@@ -9,6 +9,18 @@ namespace Schedule_Master
 {
     public class IDAO
     {
+
+        //HOW TO CREATE A PASS:
+        //INSERT into "users" (name, email, password) VALUES('testuser','testmail@pass', crypt('password', gen_salt('bf')));
+
+        //UPDATE THE PASS:
+        //UPDATE table SET password = crypt('password', gen_salt('bf'))
+
+        //VALIDATE THE PASS:
+        //SELECT ... FROM table
+        //    WHERE password is NOT NULL
+        //        AND password = crypt('password-to-test', password);
+
         static IDAO instance = null;
         public static IDAO Singleton
         {
