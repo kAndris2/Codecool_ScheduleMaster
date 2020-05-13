@@ -60,19 +60,55 @@ function register() {
             }
         });
     });
+}
 
-    
+function login() {
+    $.post("/Account/Login", { 'logindata': [$('#login-email').val(), $('#login-password').val()] }, function (data) {
+
+        $.each(data, function (key, item) {
+            if (item.errors != null && item.errors.length > 0) {
+                $.each(item.errors, function (index, value) {
+                    $('#loginErrors').toggleClass('alert alert-danger');
+                    $('#loginErrors').html(item.errors[index]);
+                    setTimeout(
+                        function () {
+                            $('#loginErrors').toggleClass('alert alert-danger');
+                            $('#loginErrors').html('');
+                        }, 3000);
+                });
+
+            }
+            else {
+                $('#loginErrors').toggleClass('alert alert-success');
+                $('#loginErrors').html('Logged In!');
+                $('#logged-user').html(item.name);
+                setTimeout(
+                    function () {
+                        $('#loginErrors').toggleClass('alert alert-success');
+                        $('#loginErrors').html('');
+                        $('#loginModal').modal('toggle')
+                    }, 1000);
+            }
+        });
+        
+    });
+}
+
+
+function logout() {
+    $.get("/Account/Logout", function (data) {
+        $('#logged-user').html('');
+    });
 }
 
 $(document).ready(function () {
     //jQuery.ajaxSettings.traditional = true;
     $('#registerModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) // Button that triggered the modal
+        var button = $(event.relatedTarget)
         //var recipient = button.data('whatever')
         var modal = $(this)
-        modal.find('.modal-title').text('Registration')
-
-        
-        
+        modal.find('.modal-title').text('Registration')     
     })
+
+
 });
