@@ -56,7 +56,7 @@ namespace Schedule_Master
             string sqlstr = "INSERT INTO users " +
                                 "(name, email, password) " +
                                 "VALUES " +
-                                    "(@name, @email, crypt(@password,gen_salt('bf')))";
+                                    "(@name, @email, @password)";
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
             {
                 conn.Open();
