@@ -167,6 +167,14 @@ namespace Schedule_Master.Controllers
         
 
         [Authorize]
+        [HttpGet ("Account")]
+        public UserModel IsLoggedIn()
+        {
+            return null;
+        }
+
+
+        [Authorize]
         [HttpGet ("Logout")]
         public void LogoutAsync()
         {

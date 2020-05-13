@@ -94,6 +94,7 @@ function login() {
     });
 }
 
+
 function logout() {
     $.get("/Account/Logout", function (data) {
         $('#logged-user').html('');

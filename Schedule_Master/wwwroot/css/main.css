@@ -69,11 +69,6 @@ button
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-.sm-flexbox
-{
-    display: flexbox;
-}
-
 .sm-btn
 {
     padding: 8px;
