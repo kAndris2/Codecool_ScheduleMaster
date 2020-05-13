@@ -43,13 +43,16 @@ namespace Schedule_Master.Controllers
         }
 
         [HttpPost ("Register")]
-        public ActionResult Register(string[] regdata)
+        public List<RegisterViewModel> Register(string[] regdata)
         {
             RegisterViewModel model = new RegisterViewModel();
             model.Username = regdata[0];
             model.Email = regdata[1];
             model.Password = regdata[2];
             model.ConfirmPassword = regdata[3];
+
+
+            List<RegisterViewModel> all = new List<RegisterViewModel>();
             if (ModelState.IsValid)
             {
                 List<UserModel> users = IDAO.Users;
@@ -57,31 +60,38 @@ namespace Schedule_Master.Controllers
                 bool err = false;
                 foreach (UserModel user in users)
                 {
-                    if (user.Email == model.Email)
-                    {
-                        err = true;
-                        newErrors.Add("User with this e-mail already exists! Choose annnother one!");
-                    }
-                    else if (user.Name == model.Username)
+                    if (user.Name == model.Username)
                     {
                         err = true;
                         newErrors.Add("User with this username already exists! Choose annnother one!");
                     }
+                    else if (user.Email == model.Email)
+                    {
+                        err = true;
+                        newErrors.Add("User with this e-mail already exists! Choose annnother one!");
+                    }
+                }
+                if (model.Password != model.ConfirmPassword)
+                {
+                    err = true;
+                    newErrors.Add("The two passwords you entered do not match!");
                 }
 
                 if (err)
                 {
                     model.errors = newErrors;
-                    return View("index.html");
+                    all.Add(model);
+                    return all;
                 }
                 else
                 {
                     IDAO.Register(model.Username, model.Email, model.Password);
+                    all.Add(model);
                     //await LoginAsync(model.Email, model.Password);
-                    return View("index.html");
+                    return all;
                 }
             }
-            else { return View("index.html"); }
+            else { return all; }
         }
         //logintest--------------------------------------------------------------------------------------------------------------
         //private readonly ILogger<AccountController> _logger;
