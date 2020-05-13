@@ -15,9 +15,8 @@ function getUsers() {
         .done(function (data) {
             $("#users").empty();
 
-            // On success, 'data' contains a list of products.
+            
             $.each(data, function (key, item) {
-                // Add a list item for the product.
                 $('<li>', { text: formatItem(item) }).appendTo($('#users'));
             });
         });
@@ -33,16 +32,40 @@ function formatItem(item) {
 
 
 
-function test() {
-    $.post("/Account/Register", { 'regdata' : ['usher','mail@asd.com','pass','pass'] }, function (data) {
-        alert(data);
+function register() {
+    $.post("/Account/Register", { 'regdata' : [$('#username').val(),$('#email').val(),$('#password').val(),$('#confirm-password').val()] }, function (data) {
+        
+        $.each(data, function (key, item) {
+            if (item.errors != null && item.errors.length > 0) {
+                $.each(item.errors, function (index, value) {
+                    $('#regErrors').toggleClass('alert alert-danger');
+                    $('#regErrors').html(item.errors[index]);
+                    setTimeout(
+                        function () {
+                            $('#regErrors').toggleClass('alert alert-danger');
+                            $('#regErrors').html('');
+                        }, 3000);
+                });
+
+            }
+            else {
+                $('#regErrors').toggleClass('alert alert-success');
+                $('#regErrors').html('Registration successful!');
+                setTimeout(
+                    function () {
+                        $('#regErrors').toggleClass('alert alert-success');
+                        $('#regErrors').html('');
+                        $('#registerModal').modal('toggle')
+                    }, 2000);
+            }
+        });
     });
 
     
 }
 
 $(document).ready(function () {
-    jQuery.ajaxSettings.traditional = true;
+    //jQuery.ajaxSettings.traditional = true;
     $('#registerModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         //var recipient = button.data('whatever')
