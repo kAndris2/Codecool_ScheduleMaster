@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Schedule_Master.Models;
 using Schedule_Master;
 using Schedule_Master.Services;
+using System.Net.Http;
 
 namespace Schedule_Master.Controllers
 {
@@ -168,9 +169,12 @@ namespace Schedule_Master.Controllers
 
         [Authorize]
         [HttpGet ("Account")]
-        public UserModel IsLoggedIn()
+        public bool IsLoggedIn()
         {
-            return null;
+            
+            if (HttpContext.Response.StatusCode == 401) { return false; }
+            else { return true; }
+            
         }
 
 

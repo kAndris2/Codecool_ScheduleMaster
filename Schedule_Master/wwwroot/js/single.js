@@ -101,6 +101,26 @@ function logout() {
     });
 }
 
+function status() {
+    //$.get("/Account/Account", function (data) {
+
+    //});
+    var url = "/Account/Account";
+    $.ajax(url,
+        {
+            statusCode: {
+                401: function () {
+                    //amiko nem vok belépve
+                    //alert('not logged in');
+                },
+                200: function () {
+                    //amiko bvevok lépve
+                    //alert('logged in');
+                }
+            }
+        });   
+}
+
 $(document).ready(function () {
     //jQuery.ajaxSettings.traditional = true;
     $('#registerModal').on('show.bs.modal', function (event) {
@@ -109,6 +129,6 @@ $(document).ready(function () {
         var modal = $(this)
         modal.find('.modal-title').text('Registration')     
     })
-
+    status();
 
 });
