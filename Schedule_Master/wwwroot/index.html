@@ -21,9 +21,7 @@
     <script src="https://kit.fontawesome.com/e1f7535694.js" crossorigin="anonymous"></script>
     <script src='js/main.js'></script>
 
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
         rel="stylesheet">
     <script src="js/calendar.js"></script>
@@ -219,27 +217,24 @@
 
         <input type="button" value="Get Users" onclick="getUsers();" />
         <ul id="users"></ul>
-    </div>
 
 
-    <!-- SHOW FOR REGISTERED USERS -->
-    <div class="sm-container">
-        <i class="fas fa-user fa-2x mt-3 mb-3"></i>
-        <p>Welcome, <strong>geza69</strong></p>
-        <button class="sm-btn">Logout</button>
+        <!-- SHOW FOR REGISTERED USERS -->
+        <div class="sm-container">
+            <i class="fas fa-user fa-2x mt-3 mb-3"></i>
+            <p>Welcome, <strong>geza69</strong></p>
+            <button class="sm-btn">Logout</button>
+        </div>
+        <!-- <hr> -->
+        <div class="sm-bar-block">
+            <button class="sm-btn-nav"><i class="fas fa-tasks ml-3 mr-3"></i>New schedule</button>
+            <button class="sm-btn-nav" onclick="toggleDropDown()">
+                <i class="fas fa-cog ml-3 mr-3 animate-icon"></i>
+                Edit schedules
+            </button>
+            <button class="sm-btn-nav"><i class="fas fa-sign-out-alt ml-3 mr-3"></i>Sign out</button>
+        </div>
     </div>
-    <!-- <hr> -->
-    <div class="sm-bar-block">
-        <button class="sm-btn-nav"><i class="fas fa-tasks ml-3 mr-3"></i>New schedule</button>
-        <button class="sm-btn-nav" onclick="toggleDropDown()">
-            <i class="fas fa-cog ml-3 mr-3 animate-icon"></i>
-            Edit schedules
-        </button>
-        <button class="sm-btn-nav"><i class="fas fa-sign-out-alt ml-3 mr-3"></i>Sign out</button>
-    </div>
-    </div>
-
-
 
 
     <!-- Modal keep it here!!! -->
