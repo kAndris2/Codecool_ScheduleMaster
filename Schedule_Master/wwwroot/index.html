@@ -283,11 +283,12 @@
             <button class="sm-btn-nav"><i class="fas fa-tasks ml-3 mr-3"></i>New schedule</button>
             <button class="sm-btn-nav" onclick="toggleDropDown()">
                 <i class="fas fa-cog ml-3 mr-3 animate-icon"></i>
-                Edit schedules
+               Edit schedules
             </button>
             <button class="sm-btn-nav"><i class="fas fa-sign-out-alt ml-3 mr-3"></i>Sign out</button>
         </div>
     </div>
+
 
 
 
@@ -323,11 +324,15 @@
                             <label asp-for="confirm-password" class="col-form-label">Confirm Password:</label>
                             <input asp-for="confirm-password" type="password" class="form-control" id="confirm-password">
                         </div>
+                        <!--FOR THE ERRORS-->
+                        <div id="regErrors" role="alert">
+                            
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" onclick="test();"> Register </button>
+                    <button type="submit" class="btn btn-primary" onclick="register();"> Register </button>
                 </div>
             </div>
         </div>
