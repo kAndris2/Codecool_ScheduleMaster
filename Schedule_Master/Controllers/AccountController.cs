@@ -120,10 +120,10 @@ namespace Schedule_Master.Controllers
                 {
                     "Invalid e-mail/password!"
                 };
-                user.Errors = errors;
-                all.Add(user);
+                UserModel wrongUser = new UserModel(404,"","","");
+                wrongUser.Errors = errors;
+                all.Add(wrongUser);
                 return all;
-
             }
 
             var claims = new List<Claim> { new Claim(ClaimTypes.Email, user.Email) };
