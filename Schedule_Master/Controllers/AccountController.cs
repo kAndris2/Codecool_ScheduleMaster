@@ -96,44 +96,43 @@ namespace Schedule_Master.Controllers
         //logintest--------------------------------------------------------------------------------------------------------------
         //private readonly ILogger<AccountController> _logger;
 
-        //private readonly IUserService _userService;
+        private readonly IUserService _userService;
 
-        //public AccountController(ILogger<AccountController> logger, IUserService userService)
-        //{
-        //    _userService = userService;
-        //}
+        public AccountController(ILogger<AccountController> logger, IUserService userService)
+        {
+            _userService = userService;
+        }
 
-        //[HttpGet]
-        //public IActionResult Login()
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
 
-        //[HttpPost]
-        //public async Task<ActionResult> LoginAsync([FromForm] string email, [FromForm] string password)
-        //{
-        //    UserModel user = _userService.Login(email, password);
-        //    if (user == null)
-        //    {
-        //        List<string> errors = new List<string>
-        //        {
-        //            "Invalid e-mail/password!"
-        //        };
-        //        ErrorViewModel err = new ErrorViewModel
-        //        {
-        //            Error = errors
-        //        };
-        //        return View(err);
+        [HttpPost ("Login")]
+        public List<UserModel> LoginAsync(string[] logindata)
+        {
+            List<UserModel> all = new List<UserModel>();
+            UserModel user = _userService.Login(logindata[0], logindata[1]);
+            if (user == null)
+            {
+                List<string> errors = new List<string>
+                {
+                    "Invalid e-mail/password!"
+                };
+                user.Errors = errors;
+                all.Add(user);
+                return all;
 
-        //    }
+            }
 
-            //var claims = new List<Claim> { new Claim(ClaimTypes.Email, user.Email) };
+            var claims = new List<Claim> { new Claim(ClaimTypes.Email, user.Email) };
 
-            //var claimsIdentity = new ClaimsIdentity(
-            //    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsIdentity = new ClaimsIdentity(
+                claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            //var authProperties = new AuthenticationProperties
-           // {
+            var authProperties = new AuthenticationProperties
+            {
                 //AllowRefresh = <bool>,
                 // Refreshing the authentication session should be allowed.
 
@@ -154,22 +153,25 @@ namespace Schedule_Master.Controllers
                 //RedirectUri = <string>
                 // The full path or absolute URI to be used as an http 
                 // redirect response value.
-    //        };
+            };
 
-        //    await HttpContext.SignInAsync(
-        //        CookieAuthenticationDefaults.AuthenticationScheme,
-        //        new ClaimsPrincipal(claimsIdentity),
-        //        authProperties);
+             HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+            var cookie = Request.Cookies[".AspNetCore.Cookies"];
+            user.cookie = cookie;
+            all.Add(user);
+            return all;
+        }
+        
 
-        //    return RedirectToAction("Index", "Home");
-        //}
-
-    //    [Authorize]
-    //    [HttpGet]
-    //    public async Task<IActionResult> LogoutAsync()
-    //    {
-    //        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-    //        return RedirectToAction("Login", "Account");
-    //    }
+        [Authorize]
+        [HttpGet ("Logout")]
+        public void LogoutAsync()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //return RedirectToAction("Login", "Account");
+        }
     }
 }
