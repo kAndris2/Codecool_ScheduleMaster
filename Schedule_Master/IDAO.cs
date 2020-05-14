@@ -108,7 +108,7 @@ namespace Schedule_Master
         {
             int id = 0;
             string sqlstr = "INSERT INTO schedules " +
-                                "(title, start, end, user_id, allday) " +
+                                "(title, start_date, end_date, user_id, allday) " +
                                 "VALUES " +
                                     "(@title, @start, @end, @userid, @allday)";
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
@@ -165,8 +165,8 @@ namespace Schedule_Master
                         int.Parse(reader["id"].ToString()),
                         reader["title"].ToString(),
                         int.Parse(reader["user_id"].ToString()),
-                        Convert.ToInt64(reader["start"].ToString()),
-                        Convert.ToInt64(reader["end"].ToString()),
+                        Convert.ToInt64(reader["start_date"].ToString()),
+                        Convert.ToInt64(reader["end_date"].ToString()),
                         reader["allday"].ToString() == "True"
                         );
                         GetUserByID(schedule.User_ID).AddSchedule(schedule);

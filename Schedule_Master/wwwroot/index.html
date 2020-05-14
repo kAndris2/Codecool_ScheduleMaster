@@ -125,8 +125,13 @@
                             },
                             true // make the event "stick"
                         );
-                        var table = [title, start, end, getUser().id, allDay];
-                        $.post("/Data/Schedule", { 'table': [table] });
+                        var table = new Array();
+                        table.push(title);
+                        table.push(convert(start.toString()));
+                        table.push(convert(end.toString()));
+                        table.push(getUser().id);
+                        table.push(allDay);
+                        $.post("/Data/Schedule", { table });
                     }
                     calendar.fullCalendar('unselect');
                 },
