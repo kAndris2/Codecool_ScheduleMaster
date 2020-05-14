@@ -169,6 +169,7 @@ namespace Schedule_Master
                         Convert.ToInt64(reader["end"].ToString()),
                         reader["allday"].ToString() == "True"
                         );
+                        GetUserByID(schedule.User_ID).AddSchedule(schedule);
                     }
                 }
             }
