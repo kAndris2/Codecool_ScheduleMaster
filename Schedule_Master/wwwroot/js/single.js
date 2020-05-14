@@ -116,6 +116,7 @@ function status(item) {
         $('div#masked').removeAttr('id');
         $('#user-Status').html('<i class="fas fa-user fa-2x mt-3 mb-3"></i>' +
             '<p> Welcome, <strong id="logged-user">' + item.name + '</strong></p>' +
+            '<p>' + item.email + '</p>'+
             '<button onclick="logout();" class="sm-btn">Logout</button>');
 
         $('#fuggolegesmenu').html('<button class="sm-btn-nav">' +
@@ -133,37 +134,6 @@ function status(item) {
                         '<button data-toggle="modal" data-target="#registerModal" class="sm-btn pull-left"> Register </button>');
                     $('#fuggolegesmenu').html('');
     }
-
-
-   
-    //$.ajax(url,
-    //    {
-    //        statusCode: {
-    //            401: function () {
-    //                //amiko nem vok belépve
-    //                //alert('not logged in');
-    //                $('#user-Status').html('<i class="fas fa-exclamation fa-3x"></i>' +
-    //                    '<p>You are not logged in! Log in, or register.</p>' +
-    //                                '<button data-toggle="modal" data-target="#loginModal" class="sm-btn pull-left" > Log In </button> ' +
-    //                    '<button data-toggle="modal" data-target="#registerModal" class="sm-btn pull-left"> Register </button>');
-    //                $('#fuggolegesmenu').html('');
-    //            },
-    //            200: function (data) {
-    //                //amiko bvevok lépve
-    //                //alert('logged in');
-    //                $('#user-Status').html('<i class="fas fa-user fa-2x mt-3 mb-3"></i>' +
-    //                    '<p> Welcome, <strong id="logged-user">' + item.name + '</strong></p>' +
-    //                    '<button onclick="logout();" class="sm-btn">Logout</button>');
-
-    //                $('#fuggolegesmenu').html('<button class="sm-btn-nav">' +
-    //                                                '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
-    //                                             '</button>' +
-    //                                             '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
-    //                                                '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
-    //                                             '</button>');
-    //            }
-    //        }
-    //    });   
 }
 
 function getUser() {
