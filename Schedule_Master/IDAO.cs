@@ -128,7 +128,6 @@ namespace Schedule_Master
             GetUserByID(userid).AddSchedule(new ScheduleModel(id, title, userid, start, end, allday));
         }
 
-        /*
         private void LoadFiles()
         {
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
@@ -161,19 +160,20 @@ namespace Schedule_Master
                     var reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        Schedules.Add
+                        ScheduleModel schedule = new ScheduleModel
                         (
-                            new ScheduleModel
-                            (
-                            int.Parse(reader["id"].ToString()),
-                            reader["title"].ToString(),
-                            int.Parse(reader["user_id"].ToString())
-                            )
+                        int.Parse(reader["id"].ToString()),
+                        reader["title"].ToString(),
+                        int.Parse(reader["user_id"].ToString()),
+                        Convert.ToInt64(reader["start"].ToString()),
+                        Convert.ToInt64(reader["end"].ToString()),
+                        reader["allday"].ToString() == "True"
                         );
                     }
                 }
             }
 
+        /*
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
             {
                 conn.Open();
@@ -237,7 +237,7 @@ namespace Schedule_Master
                     }
                 }
             }
+            */
         }
-        */
     }
 }
