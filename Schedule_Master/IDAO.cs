@@ -48,7 +48,7 @@ namespace Schedule_Master
 
         private IDAO()
         {
-            //LoadFiles();
+            LoadFiles();
         }
 
         public UserModel GetUserByID(int id)
