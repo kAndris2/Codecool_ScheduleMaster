@@ -114,64 +114,17 @@
                 allDaySlot: false,
                 selectHelper: true,
                 select: function (start, end, allDay) {
-                    var title = new Array();
-                    title.push(prompt('Event Title:'));
-                    //
-                    var start = new Array();
-                    start.push(prompt('Event start: (year/month/day/hour/minute)').split('/'));
-                    let s_year = date.getUTCFullYear() + (start[0][0] - date.getUTCFullYear()),
-                        s_month = (date.getUTCMonth() + 1) + (start[0][1] - (date.getUTCMonth() + 1)) - 1,
-                        s_day = date.getUTCDate() + (start[0][2] - date.getUTCDate()),
-                        s_hour = start[0][3],
-                        s_minute = start[0][4];
-                    //
-                    var end = new Array();
-                    end.push(prompt('Event end: (year/month/day/hour/minute)').split('/'));
-                    let e_year = date.getUTCFullYear() + (end[0][0] - date.getUTCFullYear()),
-                        e_month = (date.getUTCMonth() + 1) + (end[0][1] - (date.getUTCMonth() + 1)) - 1,
-                        e_day = date.getUTCDate() + (end[0][2] - date.getUTCDate()),
-                        e_hour = end[0][3],
-                        e_minute = end[0][4];
-                    //
-                    var mode = prompt('All day event? (yes/no)');
+                    var title = prompt('Event Title:');
                     if (title) {
                         calendar.fullCalendar('renderEvent',
                             {
-                                title: title[0],
-                                start:
-                                    new Date
-                                        (
-                                            date.getUTCFullYear() + (start[0] - date.getUTCFullYear()),
-                                            (date.getUTCMonth() + 1) + (start[1] - (date.getUTCMonth() + 1)) - 1,
-                                            date.getUTCDate() + (start[2] - date.getUTCDate()),
-                                            start[3],
-                                            start[4],
-                                            s_year,
-                                            s_month,
-                                            s_day,
-                                            s_hour,
-                                            s_minute
-
-                                        ),
-                                end:
-                                    new Date
-                                        (
-                                            date.getUTCFullYear() + (end[0] - date.getUTCFullYear()),
-                                            (date.getUTCMonth() + 1) + (end[1] - (date.getUTCMonth() + 1)) - 1,
-                                            date.getUTCDate() + (end[2] - date.getUTCDate()),
-                                            end[3],
-                                            end[4],
-                                            e_year,
-                                            e_month,
-                                            e_day,
-                                            e_hour,
-                                            e_minute
-                                        ),
-                                allDay: mode == 'yes'
+                                title: title,
+                                start: start,
+                                end: end,
+                                allDay: allDay
                             },
                             true // make the event "stick"
                         );
-                        $.post("/Data/Schedule", { 'table': [(title.concat(start)).concat(end)] });
                     }
                     calendar.fullCalendar('unselect');
                 },
