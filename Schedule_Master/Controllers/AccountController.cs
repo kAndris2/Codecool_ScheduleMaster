@@ -169,11 +169,15 @@ namespace Schedule_Master.Controllers
 
         [Authorize]
         [HttpGet ("Account")]
-        public bool IsLoggedIn()
+        public UserModel IsLoggedIn()
         {
-            
-            if (HttpContext.Response.StatusCode == 401) { return false; }
-            else { return true; }
+            List<UserModel> users = _userService.GetAll();
+            //return User.Identity.Name;
+            foreach (UserModel user in users)
+            {
+                if (user.Email == User.Claims.First().Value) { return user; };
+            }
+            return null;
             
         }
 
@@ -184,6 +188,7 @@ namespace Schedule_Master.Controllers
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             //return RedirectToAction("Login", "Account");
+
         }
     }
 }

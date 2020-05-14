@@ -79,6 +79,7 @@ function login() {
 
             }
             else {
+                
                 $('#loginErrors').toggleClass('alert alert-success');
                 $('#loginErrors').html('Logged In!');
                 $('#logged-user').html(item.name);
@@ -88,6 +89,7 @@ function login() {
                         $('#loginErrors').html('');
                         $('#loginModal').modal('toggle')
                     }, 1000);
+                status(item);
             }
         });
         
@@ -99,26 +101,80 @@ function logout() {
     $.get("/Account/Logout", function (data) {
         $('#logged-user').html('');
     });
+    setTimeout(
+        function () {
+            status();
+        }, 500);
+    
 }
 
-function status() {
-    //$.get("/Account/Account", function (data) {
+function status(item) {
 
-    //});
-    var url = "/Account/Account";
-    $.ajax(url,
-        {
-            statusCode: {
-                401: function () {
-                    //amiko nem vok belépve
-                    //alert('not logged in');
-                },
-                200: function () {
-                    //amiko bvevok lépve
-                    //alert('logged in');
-                }
-            }
-        });   
+    if (item != null) {
+        $('#user-Status').html('<i class="fas fa-user fa-2x mt-3 mb-3"></i>' +
+            '<p> Welcome, <strong id="logged-user">' + item.name + '</strong></p>' +
+            '<button onclick="logout();" class="sm-btn">Logout</button>');
+
+        $('#fuggolegesmenu').html('<button class="sm-btn-nav">' +
+            '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
+            '</button>' +
+            '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
+            '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
+            '</button>');
+    }
+    else {
+        //$("#wrap").html('');
+        $('#user-Status').html('<i class="fas fa-exclamation fa-3x"></i>' +
+                        '<p>You are not logged in! Log in, or register.</p>' +
+                                    '<button data-toggle="modal" data-target="#loginModal" class="sm-btn pull-left" > Log In </button> ' +
+                        '<button data-toggle="modal" data-target="#registerModal" class="sm-btn pull-left"> Register </button>');
+                    $('#fuggolegesmenu').html('');
+    }
+
+
+   
+    //$.ajax(url,
+    //    {
+    //        statusCode: {
+    //            401: function () {
+    //                //amiko nem vok belépve
+    //                //alert('not logged in');
+    //                $('#user-Status').html('<i class="fas fa-exclamation fa-3x"></i>' +
+    //                    '<p>You are not logged in! Log in, or register.</p>' +
+    //                                '<button data-toggle="modal" data-target="#loginModal" class="sm-btn pull-left" > Log In </button> ' +
+    //                    '<button data-toggle="modal" data-target="#registerModal" class="sm-btn pull-left"> Register </button>');
+    //                $('#fuggolegesmenu').html('');
+    //            },
+    //            200: function (data) {
+    //                //amiko bvevok lépve
+    //                //alert('logged in');
+    //                $('#user-Status').html('<i class="fas fa-user fa-2x mt-3 mb-3"></i>' +
+    //                    '<p> Welcome, <strong id="logged-user">' + item.name + '</strong></p>' +
+    //                    '<button onclick="logout();" class="sm-btn">Logout</button>');
+
+    //                $('#fuggolegesmenu').html('<button class="sm-btn-nav">' +
+    //                                                '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
+    //                                             '</button>' +
+    //                                             '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
+    //                                                '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
+    //                                             '</button>');
+    //            }
+    //        }
+    //    });   
+}
+
+function getUser() {
+    var result = null;
+    $.ajax({
+        url: "/Account/Account",
+        type: 'get',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            result = data;
+        }
+    });
+    return result;
 }
 
 $(document).ready(function () {
@@ -127,8 +183,7 @@ $(document).ready(function () {
         var button = $(event.relatedTarget)
         //var recipient = button.data('whatever')
         var modal = $(this)
-        modal.find('.modal-title').text('Registration')     
-    })
-    status();
-
+        modal.find('.modal-title').text('Registration')
+    });
+    status(getUser());
 });
