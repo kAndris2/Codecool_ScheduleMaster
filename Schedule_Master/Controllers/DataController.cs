@@ -34,20 +34,28 @@ namespace Schedule_Master.Controllers
         [HttpPost("Schedule")]
         public void Schedule(string[] table)
         {
-            DateTime start = DateTime.ParseExact(table[1], "ddd MMM dd yyyy HH:mm:ss 'GMT'K", CultureInfo.InvariantCulture);
-            DateTime end = DateTime.ParseExact(table[2], "ddd MMM dd yyyy HH:mm:ss 'GMT'K", CultureInfo.InvariantCulture);
+            /*
+             * DateTime date = DateTime.ParseExact(birth.Replace("-", "/"), "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                milisec = (long)(date - new DateTime(1970, 1, 1)).TotalMilliseconds;
+             */
+            DateTime start = DateTime.ParseExact(table[1].Replace("-", "/"), "yyyy/MM/dd", CultureInfo.InvariantCulture);
+            DateTime end = DateTime.ParseExact(table[2].Replace("-", "/"), "yyyy/MM/dd", CultureInfo.InvariantCulture);
+
             long start_m = (long)(start - new DateTime(1970, 1, 1)).TotalMilliseconds;
             long end_m = (long)(end - new DateTime(1970, 1, 1)).TotalMilliseconds;
             //
             Singleton.CreateSchedule(table[0], start_m, end_m, int.Parse(table[3]), table[4] == "true");
         }
 
-        //[HttpGet("schedule/{id}")]
-        //public ScheduleModel ValidSchedule(int id)
-        //{
 
-        //    ScheduleModel schedule = Singleton.GetSchedule(id);
-        //    return schedule;
-        //}
+        [HttpGet("schedule/{id}")]
+        public List<ScheduleModel> ValidSchedule(int id)
+        {
+
+            List<ScheduleModel> schedule = Singleton.GetSchedule(id);
+            return schedule;
+        }
+
     }
 }
+        

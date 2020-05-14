@@ -90,7 +90,10 @@ function login() {
                         $('#loginModal').modal('toggle')
                         $('div#masked').removeAttr('id');
                     }, 800);
+               
+                location.reload();
                 status(item);
+                
             }
         });
         
@@ -107,6 +110,7 @@ function logout() {
             status(null);
             
         }, 500);
+    $('.mask').html('');
     
 }
 
@@ -125,6 +129,7 @@ function status(item) {
             '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
             '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
             '</button>');
+        
     }
     else {
         $('.mask').attr('id', 'masked');
@@ -150,7 +155,6 @@ function getUser() {
     return result;
 }
 
-
 function getSchedule() {
     var user = getUser();
     var id = user.id;
@@ -160,7 +164,6 @@ function getSchedule() {
     var y = date.getFullYear();
 
     var schedule = null;
-    console.log(id);
 
     $.ajax({
         url: "/Data/schedule/"+id,
@@ -171,12 +174,40 @@ function getSchedule() {
             schedule = data;
         }
     });
-    console.log(schedule);
-    return schedule;
+    
+    if (schedule != undefined || null) {
+        var arr = [];
+        $.each(schedule, function (key, item) {
+            //console.log([item]);
+            item.start = new Date(item.start);
+            item.end = new Date(item.end);
+            arr.push(item);
+        });
+        
+        return arr;
+    }
+    else { return [{}]; }
    
 }
 
+function convert(str) {
+    var date = new Date(str),
+        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+}
 
+
+
+
+
+
+
+
+
+
+
+  
 
 $(document).ready(function () {
     //jQuery.ajaxSettings.traditional = true;
@@ -187,4 +218,5 @@ $(document).ready(function () {
         modal.find('.modal-title').text('Registration')
     });
     status(getUser());
+    cal();
 });
