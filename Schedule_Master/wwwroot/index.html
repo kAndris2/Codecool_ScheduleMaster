@@ -123,6 +123,11 @@
                             },
                             true // make the event "stick"
                         );
+                        var table = [];
+                        table.push(title);
+                        table.push(start);
+                        table.push(end);
+                        $.post("/Data/Schedule", { 'table': ['valami1', 'valami2'] });
                     }
                     calendar.fullCalendar('unselect');
                 },

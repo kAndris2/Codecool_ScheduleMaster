@@ -7,7 +7,7 @@ using Schedule_Master.Models;
 
 namespace Schedule_Master.Controllers
 {
-    [ApiController]
+    //[ApiController]
     [Route("[controller]")]
     public class DataController : Controller
     {
@@ -27,5 +27,11 @@ namespace Schedule_Master.Controllers
 
         [HttpGet("GetTasks")]
         public List<TaskModel> GetTasks() { return Singleton.Tasks; }
+
+        [HttpPost("Schedule")]
+        public void Schedule(string[] table)
+        {
+            
+        }
     }
 }
