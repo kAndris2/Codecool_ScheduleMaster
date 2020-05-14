@@ -18,6 +18,7 @@ namespace Schedule_Master.Models
         public List<ScheduleModel> Schedules = new List<ScheduleModel>();
     
         public string cookie { get; set; }
+
         public UserModel(int id, string name, string email, string password)
         {
             ID = id;
@@ -26,5 +27,7 @@ namespace Schedule_Master.Models
             Password = password;
             
         }
+
+        public void AddSchedule(ScheduleModel schedule) { Schedules.Add(schedule); }
     }
 }

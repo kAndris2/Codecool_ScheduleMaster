@@ -40,14 +40,32 @@ namespace Schedule_Master
         }
 
         public List<UserModel> Users = new List<UserModel>();
-        public List<ScheduleModel> Schedules = new List<ScheduleModel>();
+        /*
         public List<ColumnModel> Columns = new List<ColumnModel>();
         public List<SlotModel> Slots = new List<SlotModel>();
         public List<TaskModel> Tasks = new List<TaskModel>();
+        */
 
         private IDAO()
         {
-            LoadFiles();
+            //LoadFiles();
+        }
+
+        public UserModel GetUserByID(int id)
+        {
+            return Users.FirstOrDefault(u => u.ID == id);
+        }
+
+        public List<ScheduleModel> GetSchedules()
+        {
+            List<ScheduleModel> schedules = new List<ScheduleModel>();
+
+            foreach (UserModel user in Users)
+            {
+                if (user.Schedules.Count >= 1)
+                    schedules.AddRange(user.Schedules);
+            }
+            return schedules;
         }
 
         public void Register(string name, string email, string password)
@@ -86,6 +104,31 @@ namespace Schedule_Master
             return value;
         }
 
+        public void CreateSchedule(string title, long start, long end, int userid, bool allday)
+        {
+            int id = 0;
+            string sqlstr = "INSERT INTO schedules " +
+                                "(title, start, end, user_id, allday) " +
+                                "VALUES " +
+                                    "(@title, @start, @end, @userid, @allday)";
+            using (var conn = new NpgsqlConnection(Program.ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand(sqlstr, conn))
+                {
+                    cmd.Parameters.AddWithValue("title", title);
+                    cmd.Parameters.AddWithValue("start", start);
+                    cmd.Parameters.AddWithValue("end", end);
+                    cmd.Parameters.AddWithValue("userid", userid);
+                    cmd.Parameters.AddWithValue("allday", allday);
+                    cmd.ExecuteNonQuery();
+                }
+                id = int.Parse(GetLastIDFromTable(conn, "schedules"));
+            }
+            GetUserByID(userid).AddSchedule(new ScheduleModel(id, title, userid, start, end, allday));
+        }
+
+        /*
         private void LoadFiles()
         {
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
@@ -195,5 +238,6 @@ namespace Schedule_Master
                 }
             }
         }
+        */
     }
 }
