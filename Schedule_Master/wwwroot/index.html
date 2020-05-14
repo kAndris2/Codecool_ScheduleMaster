@@ -125,6 +125,8 @@
                             },
                             true // make the event "stick"
                         );
+                        var table = [title, start, end, getUser().id, allDay];
+                        $.post("/Data/Schedule", { 'table': [table] });
                     }
                     calendar.fullCalendar('unselect');
                 },
