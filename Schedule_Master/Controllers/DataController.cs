@@ -31,7 +31,7 @@ namespace Schedule_Master.Controllers
         [HttpPost("Schedule")]
         public void Schedule(string[] table)
         {
-            
+            Console.WriteLine(table[0].Length);
         }
     }
 }
