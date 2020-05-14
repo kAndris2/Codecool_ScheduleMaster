@@ -41,5 +41,13 @@ namespace Schedule_Master.Controllers
             //
             Singleton.CreateSchedule(table[0], start_m, end_m, int.Parse(table[3]), table[4] == "true");
         }
+
+        //[HttpGet("schedule/{id}")]
+        //public ScheduleModel ValidSchedule(int id)
+        //{
+
+        //    ScheduleModel schedule = Singleton.GetSchedule(id);
+        //    return schedule;
+        //}
     }
 }

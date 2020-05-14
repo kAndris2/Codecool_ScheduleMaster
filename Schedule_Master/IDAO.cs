@@ -128,6 +128,15 @@ namespace Schedule_Master
             GetUserByID(userid).AddSchedule(new ScheduleModel(id, title, userid, start, end, allday));
         }
 
+        public ScheduleModel GetSchedule(int id)
+        {
+            foreach (ScheduleModel schedule in GetSchedules())
+            {
+                if (schedule.User_ID == id) { return schedule; }
+            }
+            return null;
+        }
+
         private void LoadFiles()
         {
             using (var conn = new NpgsqlConnection(Program.ConnectionString))

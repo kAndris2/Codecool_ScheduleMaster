@@ -172,7 +172,7 @@ function getSchedule() {
         }
     });
     console.log(schedule);
-    return null;
+    return schedule;
    
 }
 
