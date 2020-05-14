@@ -28,10 +28,14 @@ namespace Schedule_Master.Controllers
         [HttpGet("GetTasks")]
         public List<TaskModel> GetTasks() { return Singleton.Tasks; }
 
-        [HttpPost("Schedule")]
-        public void Schedule(string[] table)
+        [HttpGet("schedule/{id}")]
+        public ScheduleModel Schedule(int id)
         {
-            Console.WriteLine(table[0].Length);
+            ScheduleModel schedule = new ScheduleModel(122, "pinga", id);
+            return schedule;
         }
+
+        
+
     }
 }

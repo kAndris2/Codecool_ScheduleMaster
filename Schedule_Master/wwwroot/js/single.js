@@ -150,6 +150,34 @@ function getUser() {
     return result;
 }
 
+
+function getSchedule() {
+    var user = getUser();
+    var id = user.id;
+    var date = new Date();
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
+
+    var schedule = null;
+    console.log(id);
+
+    $.ajax({
+        url: "/Data/schedule/"+id,
+        type: 'get',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            schedule = data;
+        }
+    });
+    console.log(schedule);
+    return null;
+   
+}
+
+
+
 $(document).ready(function () {
     //jQuery.ajaxSettings.traditional = true;
     $('#registerModal').on('show.bs.modal', function (event) {

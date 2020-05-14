@@ -8,16 +8,19 @@ namespace Schedule_Master.Models
     public class ScheduleModel
     {
         public int ID { get; }
-        public String Title { get; private set; }
+        public String title { get; private set; }
         public int User_ID { get; }
+
+        public string start { get; private set; }
 
         public List<ColumnModel> Columns = new List<ColumnModel>();
 
         public ScheduleModel(int id, string title, int userid)
         {
             ID = id;
-            Title = title;
+            this.title = title;
             User_ID = userid;
+            
         }
     }
 }
