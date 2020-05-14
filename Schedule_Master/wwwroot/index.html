@@ -94,16 +94,40 @@
                 selectHelper: true,
                 select: function (start, end, allDay) {
                     var title = prompt('Event Title:');
+                    var start = prompt('Event start: (year/month/day/hour/minute)').split('/');
+                    var end = prompt('Event end: (year/month/day/hour/minute)').split('/');
+                    var mode = prompt('All day event? (yes/no)');
                     if (title) {
                         calendar.fullCalendar('renderEvent',
                             {
                                 title: title,
-                                start: start,
-                                end: end,
-                                allDay: allDay
+                                start:
+                                    new Date
+                                        (
+                                        date.getUTCFullYear() + (start[0] - date.getUTCFullYear()),
+                                        (date.getUTCMonth() + 1) + (start[1] - (date.getUTCMonth() + 1)) - 1,
+                                        date.getUTCDate() + (start[2] - date.getUTCDate()),
+                                        start[3],
+                                        start[4]
+                                        ),
+                                end:
+                                    new Date
+                                        (
+                                        date.getUTCFullYear() + (end[0] - date.getUTCFullYear()),
+                                        (date.getUTCMonth() + 1) + (end[1] - (date.getUTCMonth() + 1)) - 1,
+                                        date.getUTCDate() + (end[2] - date.getUTCDate()),
+                                        end[3],
+                                        end[4]
+                                        ),
+                                allDay: mode == 'yes'
                             },
                             true // make the event "stick"
                         );
+                        var table = [];
+                        table.push(title);
+                        table.push(start);
+                        table.push(end);
+                        $.post("/Data/Schedule", { 'table': ['valami1', 'valami2'] });
                     }
                     calendar.fullCalendar('unselect');
                 },
