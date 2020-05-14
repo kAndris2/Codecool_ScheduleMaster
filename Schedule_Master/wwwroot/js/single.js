@@ -88,7 +88,8 @@ function login() {
                         $('#loginErrors').toggleClass('alert alert-success');
                         $('#loginErrors').html('');
                         $('#loginModal').modal('toggle')
-                    }, 1000);
+                        $('div#masked').removeAttr('id');
+                    }, 800);
                 status(item);
             }
         });
@@ -103,7 +104,8 @@ function logout() {
     });
     setTimeout(
         function () {
-            status();
+            status(null);
+            
         }, 500);
     
 }
@@ -111,6 +113,7 @@ function logout() {
 function status(item) {
 
     if (item != null) {
+        $('div#masked').removeAttr('id');
         $('#user-Status').html('<i class="fas fa-user fa-2x mt-3 mb-3"></i>' +
             '<p> Welcome, <strong id="logged-user">' + item.name + '</strong></p>' +
             '<button onclick="logout();" class="sm-btn">Logout</button>');
@@ -123,7 +126,7 @@ function status(item) {
             '</button>');
     }
     else {
-        //$("#wrap").html('');
+        $('.mask').attr('id', 'masked');
         $('#user-Status').html('<i class="fas fa-exclamation fa-3x"></i>' +
                         '<p>You are not logged in! Log in, or register.</p>' +
                                     '<button data-toggle="modal" data-target="#loginModal" class="sm-btn pull-left" > Log In </button> ' +

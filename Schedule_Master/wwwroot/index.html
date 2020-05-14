@@ -24,7 +24,27 @@
         rel="stylesheet">
     <script src="js/calendar.js"></script>
     <link rel="stylesheet" href="css/calendar.css" />
-
+    <style>
+        #masked {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            
+            opacity: 0.5;
+            filter: blur(6px);
+            -webkit-filter: blur(6px);
+            -moz-filter: blur(6px);
+            -o-filter: blur(6px);
+            -ms-filter: blur(6px);
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            height: 300px;
+            width: auto;
+        }
+    </style>
     <script>
 
         $(document).ready(function () {
@@ -214,11 +234,13 @@
 <body>
     <!-- MAIN -->
     <div class="sm-main">
-        <div id='wrap'>
+        <div id="masked" class="mask">
+            <div id='wrap'>
 
-            <div id='calendar'></div>
+                <div id='calendar'></div>
 
-            <div style='clear:both'></div>
+                <div style='clear:both'></div>
+            </div>
         </div>
     </div>
     <!-- SIDEBAR -->
