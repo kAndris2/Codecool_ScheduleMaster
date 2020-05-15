@@ -23,6 +23,12 @@
     <script src='js/main.js'></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
           rel="stylesheet">
+    <!--TEST-->
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
+    <!--TESTVÉG-->
     <script src="js/calendar.js"></script>
     <link rel="stylesheet" href="css/calendar.css" />
     <style>
@@ -55,9 +61,9 @@
             var y = date.getFullYear();
 
             /*  className colors
-        
+
             className: default(transparent), important(red), chill(pink), success(green), info(blue)
-        
+
             */
 
 
@@ -167,7 +173,35 @@
         }
 
 
-            
+
+    </script>
+    <script>
+        $(function () {
+            $.contextMenu({
+                selector: '.context-menu-one',
+                callback: function (key, options) {
+                    var m = "clicked: " + key;
+                    window.console && console.log(m) || alert(m);
+                },
+                items: {
+                    "edit": { name: "Edit", icon: "edit" },
+                    "cut": { name: "Cut", icon: "cut" },
+                    copy: { name: "Copy", icon: "copy" },
+                    "paste": { name: "Paste", icon: "paste" },
+                    "delete": { name: "Delete", icon: "delete" },
+                    "sep1": "---------",
+                    "quit": {
+                        name: "Quit", icon: function () {
+                            return 'context-menu-icon context-menu-icon-quit';
+                        }
+                    }
+                }
+            });
+
+            $('.context-menu-one').on('click', function (e) {
+                console.log('clicked', this);
+            })
+        });
     </script>
     <link rel="stylesheet" href="css/calendar2.css" />
 </head>
@@ -187,17 +221,18 @@
     <!-- SIDEBAR -->
     <div class="sm-sidenavbar">
         <input type="button" value="Debug button boi" onclick="getSchedule();" />
+        
         <!--<div class="sm-container">
         <i class="fas fa-exclamation fa-3x"></i>
         <h1>You haven't registered yet!</h1>
         <button class="sm-btn">Register</button>
         </div>-->
-            <!-- Button trigger registration modal -->
-            <!--<button type="button" class="btn btn-success" data-toggle="modal" data-target="#registerModal">
+        <!-- Button trigger registration modal -->
+        <!--<button type="button" class="btn btn-success" data-toggle="modal" data-target="#registerModal">
             Register
         </button>-->
-            <!--Button trigger login modal -->
-            <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal"> Log In </button>
+        <!--Button trigger login modal -->
+        <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal"> Log In </button>
 
         <input type="button" value="Get Users" onclick="getUsers();" />
         <ul id="users"></ul>-->
@@ -209,7 +244,7 @@
 
         <div id="fuggolegesmenu" class="sm-bar-block">
 
-            
+
         </div>
 
 
@@ -218,7 +253,7 @@
     <!--MODALS! KEEP THEM HERE!-->
     <!-- Registration -->
     <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -248,7 +283,7 @@
                         <div class="form-group">
                             <label asp-for="confirm-password" class="col-form-label">Confirm Password:</label>
                             <input asp-for="confirm-password" type="password" class="form-control"
-                                id="confirm-password">
+                                   id="confirm-password">
                         </div>
                         <!--FOR THE ERRORS-->
                         <div id="regErrors" role="alert">
@@ -264,10 +299,9 @@
         </div>
     </div>
     <!--Registration modal end-->
-
     <!--Login-->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -309,3 +343,56 @@
 </body>
 
 </html>
+
+
+<!-- EVENTS HELPER XD-->
+<!--events: [
+            {
+                title: 'All Day Event',
+                start: new Date(y, m, 1)
+            },
+            {
+                title: 'pina',
+                start: new Date(y,m,3)
+            },
+            {
+                id: 999,
+                title: 'Repeating Event',
+                start: new Date(y, m, d - 3, 16, 0),
+                allDay: false,
+                className: 'info'
+            },
+            {
+                id: 999,
+                title: 'Repeating Event',
+                start: new Date(y, m, d + 4, 16, 0),
+                allDay: false,
+                className: 'info'
+            },
+            {
+                title: 'Meeting',
+                start: new Date(y, m, d, 10, 30),
+                allDay: false,
+                className: 'important'
+            },
+            {
+                title: 'Lunch',
+                start: new Date(y, m, d, 12, 0),
+                end: new Date(y, m, d, 14, 0),
+                allDay: false,
+                className: 'important'
+            },
+            {
+                title: 'Birthday Party',
+                start: new Date(y, m, d + 1, 19, 0),
+                end: new Date(y, m, d + 1, 22, 30),
+                allDay: false,
+            },
+            {
+                title: 'Click for Google',
+                start: new Date(y, m, 28),
+                end: new Date(y, m, 29),
+                url: '',
+                className: 'success'
+            }
+        ],-->

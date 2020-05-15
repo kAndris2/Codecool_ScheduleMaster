@@ -5350,7 +5350,7 @@
 				skinCss +
 				"'" +
 				">" +
-				"<div class='fc-event-inner'>";
+				"<div class='fc-event-inner context-menu-one'>";//ide kapáltam
 			if (!event.allDay && segment.isStart) {
 				html +=
 					"<span class='fc-event-time'>" +
