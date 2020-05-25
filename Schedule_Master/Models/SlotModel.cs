@@ -12,7 +12,7 @@ namespace Schedule_Master.Models
         //public int Task_ID { get; }
         public int HourValue { get; }
 
-        public TaskModel Task { get; private set; }
+        public List<TaskModel> Tasks = new List<TaskModel>();
 
         public SlotModel(int id, int columnid, int hour)
         {
@@ -22,6 +22,7 @@ namespace Schedule_Master.Models
             HourValue = hour;
         }
 
-        public void AddTask(TaskModel task) { Task = task; }
+        public void AddTask(TaskModel task) { Tasks.Add(task); }
+        public void RemoveTask(int taskid) { Tasks.Remove(Tasks.FirstOrDefault(t => t.ID == taskid)); }
     }
 }
