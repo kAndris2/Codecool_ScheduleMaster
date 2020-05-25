@@ -9,7 +9,6 @@ namespace Schedule_Master.Models
     {
         public int ID { get; }
         public int Column_ID { get; }
-        //public int Task_ID { get; }
         public int HourValue { get; }
 
         public List<TaskModel> Tasks = new List<TaskModel>();
@@ -18,7 +17,6 @@ namespace Schedule_Master.Models
         {
             ID = id;
             Column_ID = columnid;
-            //Task_ID = taskid;
             HourValue = hour;
         }
 
