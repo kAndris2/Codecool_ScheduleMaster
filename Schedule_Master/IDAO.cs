@@ -40,11 +40,6 @@ namespace Schedule_Master
         }
 
         public List<UserModel> Users = new List<UserModel>();
-        /*
-        public List<ColumnModel> Columns = new List<ColumnModel>();
-        public List<SlotModel> Slots = new List<SlotModel>();
-        public List<TaskModel> Tasks = new List<TaskModel>();
-        */
 
         private IDAO()
         {
@@ -153,16 +148,104 @@ namespace Schedule_Master
             GetScheduleByID(scheduleid).AddColumn(new ColumnModel(id, title, scheduleid));
         }
 
+        public ColumnModel GetColumnByID(int id)
+        {
+            foreach (ScheduleModel schedule in GetSchedules())
+            {
+                return schedule.Columns.FirstOrDefault(c => c.ID == id);
+            }
+            throw new ArgumentException($"Invalid Column ID! ('{id}')");
+        }
+
+        public List<ColumnModel> GetColumns()
+        {
+            List<ColumnModel> columns = new List<ColumnModel>();
+
+            foreach(ScheduleModel schedule in GetSchedules())
+            {
+                columns.AddRange(schedule.Columns);
+            }
+
+            return columns;
+        }
+
         //-Slot Functions---------------------------------------------------------------------------
         public void CreateSlot(int columnid, int hour)
         {
+            int id = 0;
+            string sqlstr = "INSERT INTO slots " +
+                                "(column_id, hour_value) " +
+                                "VALUES " +
+                                    "(@columnid, @hour)";
+            using (var conn = new NpgsqlConnection(Program.ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand(sqlstr, conn))
+                {
+                    cmd.Parameters.AddWithValue("columnid", columnid);
+                    cmd.Parameters.AddWithValue("hour", hour);
+                    cmd.ExecuteNonQuery();
+                }
+                id = int.Parse(GetLastIDFromTable(conn, "slots"));
+            }
+            GetColumnByID(columnid).AddSlot(new SlotModel(id, columnid, hour));
+        }
 
+        public List<SlotModel> GetSlots()
+        {
+            List<SlotModel> slots = new List<SlotModel>();
+
+            foreach (ColumnModel column in GetColumns())
+            {
+                slots.AddRange(column.Slots);
+            }
+
+            return slots;
+        }
+
+        public SlotModel GetSlotByID(int id)
+        {
+            return GetSlots().FirstOrDefault(s => s.ID == id);
         }
 
         //-Task Functions---------------------------------------------------------------------------
         public void CreateTask(string title, string content, int slotid)
         {
+            int id = 0;
+            string sqlstr = "INSERT INTO tasks " +
+                                "(title, content, slot_id) " +
+                                "VALUES " +
+                                    "(@title, @content, @slotid)";
+            using (var conn = new NpgsqlConnection(Program.ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand(sqlstr, conn))
+                {
+                    cmd.Parameters.AddWithValue("title", title);
+                    cmd.Parameters.AddWithValue("content", content);
+                    cmd.Parameters.AddWithValue("slotid", slotid);
+                    cmd.ExecuteNonQuery();
+                }
+                id = int.Parse(GetLastIDFromTable(conn, "tasks"));
+            }
+            GetSlotByID(slotid).AddTask(new TaskModel(id, title, content, slotid));
+        }
 
+        public List<TaskModel> GetTasks()
+        {
+            List<TaskModel> tasks = new List<TaskModel>();
+
+            foreach(SlotModel slot in GetSlots())
+            {
+                tasks.Add(slot.Task);
+            }
+
+            return tasks;
+        }
+
+        public TaskModel GetTaskByID(int id)
+        {
+            return GetTasks().FirstOrDefault(t => t.ID == id);
         }
 
         //-Other Functions---------------------------------------------------------------------------
@@ -223,7 +306,6 @@ namespace Schedule_Master
                 }
             }
 
-        /*
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
             {
                 conn.Open();
@@ -232,15 +314,13 @@ namespace Schedule_Master
                     var reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        Columns.Add
+                        ColumnModel column = new ColumnModel
                         (
-                            new ColumnModel
-                            (
-                            int.Parse(reader["id"].ToString()),
-                            reader["title"].ToString(),
-                            int.Parse(reader["schedule_id"].ToString())
-                            )
+                        int.Parse(reader["id"].ToString()),
+                        reader["title"].ToString(),
+                        int.Parse(reader["schedule_id"].ToString())
                         );
+                        GetScheduleByID(column.Schedule_ID).AddColumn(column);
                     }
                 }
             }
@@ -253,16 +333,13 @@ namespace Schedule_Master
                     var reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        Slots.Add
+                        SlotModel slot = new SlotModel
                         (
-                            new SlotModel
-                            (
-                            int.Parse(reader["id"].ToString()),
-                            int.Parse(reader["column_id"].ToString()),
-                            int.Parse(reader["task_id"].ToString()),
-                            int.Parse(reader["hour_value"].ToString())
-                            )
+                        int.Parse(reader["id"].ToString()),
+                        int.Parse(reader["column_id"].ToString()),
+                        int.Parse(reader["hour_value"].ToString())
                         );
+                        GetColumnByID(slot.Column_ID).AddSlot(slot);
                     }
                 }
             }
@@ -275,19 +352,17 @@ namespace Schedule_Master
                     var reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        Tasks.Add
+                        TaskModel task = new TaskModel
                         (
-                            new TaskModel
-                            (
-                            int.Parse(reader["id"].ToString()),
-                            reader["title"].ToString(),
-                            reader["content"].ToString()
-                            )
+                        int.Parse(reader["id"].ToString()),
+                        reader["title"].ToString(),
+                        reader["content"].ToString(),
+                        int.Parse(reader["slot_id"].ToString())
                         );
+                        GetSlotByID(task.Slot_ID).AddTask(task);
                     }
                 }
             }
-            */
         }
     }
 }
