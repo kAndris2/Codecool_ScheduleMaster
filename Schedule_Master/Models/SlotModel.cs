@@ -9,16 +9,16 @@ namespace Schedule_Master.Models
     {
         public int ID { get; }
         public int Column_ID { get; }
-        public int Task_ID { get; }
+        //public int Task_ID { get; }
         public int HourValue { get; }
 
         public TaskModel Task { get; private set; }
 
-        public SlotModel(int id, int columnid, int taskid, int hour)
+        public SlotModel(int id, int columnid, int hour)
         {
             ID = id;
             Column_ID = columnid;
-            Task_ID = taskid;
+            //Task_ID = taskid;
             HourValue = hour;
         }
 

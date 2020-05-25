@@ -51,21 +51,10 @@ namespace Schedule_Master
             LoadFiles();
         }
 
+        //-User Functions---------------------------------------------------------------------------
         public UserModel GetUserByID(int id)
         {
             return Users.FirstOrDefault(u => u.ID == id);
-        }
-
-        public List<ScheduleModel> GetSchedules()
-        {
-            List<ScheduleModel> schedules = new List<ScheduleModel>();
-
-            foreach (UserModel user in Users)
-            {
-                if (user.Schedules.Count >= 1)
-                    schedules.AddRange(user.Schedules);
-            }
-            return schedules;
         }
 
         public void Register(string name, string email, string password)
@@ -90,18 +79,18 @@ namespace Schedule_Master
             Users.Add(new UserModel(id, name, email, password));
         }
 
-        public String GetLastIDFromTable(NpgsqlConnection connection, string table)
+        //-Schedule Functions-----------------------------------------------------------------------
+
+        public List<ScheduleModel> GetSchedules()
         {
-            string value = "";
-            using (var cmd = new NpgsqlCommand($"SELECT * FROM {table}", connection))
+            List<ScheduleModel> schedules = new List<ScheduleModel>();
+
+            foreach (UserModel user in Users)
             {
-                var reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    value = reader["id"].ToString();
-                }
+                if (user.Schedules.Count >= 1)
+                    schedules.AddRange(user.Schedules);
             }
-            return value;
+            return schedules;
         }
 
         public void CreateSchedule(string title, int userid)
@@ -134,7 +123,61 @@ namespace Schedule_Master
             }
             if (all.Count > 0) { return all; }
             else { return null; }
-            
+
+        }
+
+        public ScheduleModel GetScheduleByID(int id)
+        {
+            return GetSchedules().FirstOrDefault(s => s.ID == id);
+        }
+
+        //-Column Functions-------------------------------------------------------------------------
+        public void CreateColumn(string title, int scheduleid)
+        {
+            int id = 0;
+            string sqlstr = "INSERT INTO columns " +
+                                "(title, schedule_id) " +
+                                "VALUES " +
+                                    "(@title, @scheduleid)";
+            using (var conn = new NpgsqlConnection(Program.ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand(sqlstr, conn))
+                {
+                    cmd.Parameters.AddWithValue("title", title);
+                    cmd.Parameters.AddWithValue("scheduleid", scheduleid);
+                    cmd.ExecuteNonQuery();
+                }
+                id = int.Parse(GetLastIDFromTable(conn, "columns"));
+            }
+            GetScheduleByID(scheduleid).AddColumn(new ColumnModel(id, title, scheduleid));
+        }
+
+        //-Slot Functions---------------------------------------------------------------------------
+        public void CreateSlot(int columnid, int hour)
+        {
+
+        }
+
+        //-Task Functions---------------------------------------------------------------------------
+        public void CreateTask(string title, string content, int slotid)
+        {
+
+        }
+
+        //-Other Functions---------------------------------------------------------------------------
+        public String GetLastIDFromTable(NpgsqlConnection connection, string table)
+        {
+            string value = "";
+            using (var cmd = new NpgsqlCommand($"SELECT * FROM {table}", connection))
+            {
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    value = reader["id"].ToString();
+                }
+            }
+            return value;
         }
 
         private void LoadFiles()
