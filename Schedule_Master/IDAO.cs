@@ -238,7 +238,7 @@ namespace Schedule_Master
 
             foreach(SlotModel slot in GetSlots())
             {
-                tasks.Add(slot.Task);
+                tasks.AddRange(slot.Tasks);
             }
 
             return tasks;
