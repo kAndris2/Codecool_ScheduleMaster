@@ -129,24 +129,20 @@ namespace Schedule_Master
         }
 
         //-Column Functions-------------------------------------------------------------------------
-        public void CreateColumn(string title, int scheduleid)
+        private void CreateColumn(NpgsqlConnection connection, string title, int scheduleid)
         {
             int id = 0;
             string sqlstr = "INSERT INTO columns " +
                                 "(title, schedule_id) " +
                                 "VALUES " +
                                     "(@title, @scheduleid)";
-            using (var conn = new NpgsqlConnection(Program.ConnectionString))
+            using (var cmd = new NpgsqlCommand(sqlstr, connection))
             {
-                conn.Open();
-                using (var cmd = new NpgsqlCommand(sqlstr, conn))
-                {
-                    cmd.Parameters.AddWithValue("title", title);
-                    cmd.Parameters.AddWithValue("scheduleid", scheduleid);
-                    cmd.ExecuteNonQuery();
-                }
-                id = int.Parse(GetLastIDFromTable(conn, "columns"));
+                cmd.Parameters.AddWithValue("title", title);
+                cmd.Parameters.AddWithValue("scheduleid", scheduleid);
+                cmd.ExecuteNonQuery();
             }
+            id = int.Parse(GetLastIDFromTable(connection, "columns"));
             GetScheduleByID(scheduleid).AddColumn(new ColumnModel(id, title, scheduleid));
         }
 
@@ -172,24 +168,20 @@ namespace Schedule_Master
         }
 
         //-Slot Functions---------------------------------------------------------------------------
-        public void CreateSlot(int columnid, int hour)
+        private void CreateSlot(NpgsqlConnection connection, int columnid, int hour)
         {
             int id = 0;
             string sqlstr = "INSERT INTO slots " +
                                 "(column_id, hour_value) " +
                                 "VALUES " +
                                     "(@columnid, @hour)";
-            using (var conn = new NpgsqlConnection(Program.ConnectionString))
+            using (var cmd = new NpgsqlCommand(sqlstr, connection))
             {
-                conn.Open();
-                using (var cmd = new NpgsqlCommand(sqlstr, conn))
-                {
-                    cmd.Parameters.AddWithValue("columnid", columnid);
-                    cmd.Parameters.AddWithValue("hour", hour);
-                    cmd.ExecuteNonQuery();
-                }
-                id = int.Parse(GetLastIDFromTable(conn, "slots"));
+                cmd.Parameters.AddWithValue("columnid", columnid);
+                cmd.Parameters.AddWithValue("hour", hour);
+                cmd.ExecuteNonQuery();
             }
+            id = int.Parse(GetLastIDFromTable(connection, "slots"));
             GetColumnByID(columnid).AddSlot(new SlotModel(id, columnid, hour));
         }
 
@@ -251,7 +243,7 @@ namespace Schedule_Master
         }
 
         //-Other Functions---------------------------------------------------------------------------
-        public String GetLastIDFromTable(NpgsqlConnection connection, string table)
+        private String GetLastIDFromTable(NpgsqlConnection connection, string table)
         {
             string value = "";
             using (var cmd = new NpgsqlCommand($"SELECT * FROM {table}", connection))
@@ -271,15 +263,22 @@ namespace Schedule_Master
             {
                 "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
             };
-            var conn = new NpgsqlConnection(Program.ConnectionString);
-            conn.Open();
 
-            for (int i = 0; i < Days.Length; i++)
+            using (var conn = new NpgsqlConnection(Program.ConnectionString))
             {
-                CreateColumn(Days[i], scheduleid);
+                conn.Open();
 
+                for (int i = 0; i < Days.Length; i++)
+                {
+                    CreateColumn(conn, Days[i], scheduleid);
+                    int columnid = int.Parse(GetLastIDFromTable(conn, "columns"));
+
+                    for (int n = 0; n < 24; n++)
+                    {
+                        CreateSlot(conn, columnid, n + 1);
+                    }
+                }
             }
-            conn.Close();
         }
 
         private void LoadFiles()
