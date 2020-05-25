@@ -12,6 +12,7 @@ namespace Schedule_Master.Models
         public String Name { get; private set; }
         public String Email { get; private set; }
         public String Password { get; private set; }
+        public String Role { get; private set; }
 
         public List<String> Errors { get; set; }
 
@@ -19,13 +20,13 @@ namespace Schedule_Master.Models
     
         public string cookie { get; set; }
 
-        public UserModel(int id, string name, string email, string password)
+        public UserModel(int id, string name, string email, string password, string role)
         {
             ID = id;
             Name = name;
             Email = email;
             Password = password;
-            
+            Role = role;
         }
 
         public void AddSchedule(ScheduleModel schedule) { Schedules.Add(schedule); }

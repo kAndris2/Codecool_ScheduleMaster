@@ -121,7 +121,7 @@ namespace Schedule_Master.Controllers
                 {
                     "Invalid e-mail/password!"
                 };
-                UserModel wrongUser = new UserModel(404,"","","");
+                UserModel wrongUser = new UserModel(404,"","","","");
                 wrongUser.Errors = errors;
                 all.Add(wrongUser);
                 return all;

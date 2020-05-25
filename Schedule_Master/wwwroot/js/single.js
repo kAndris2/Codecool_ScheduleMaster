@@ -120,15 +120,29 @@ function status(item) {
         $('div#masked').removeAttr('id');
         $('#user-Status').html('<i class="fas fa-user fa-2x mt-3 mb-3"></i>' +
             '<p> Welcome, <strong id="logged-user">' + item.name + '</strong></p>' +
-            '<p>' + item.email + '</p>'+
+            '<p>' + item.email + '</p>' +
+            '<p> Your role: ' + item.role + '</p>' +
             '<button onclick="logout();" class="sm-btn">Logout</button>');
 
-        $('#fuggolegesmenu').html('<button class="sm-btn-nav">' +
-            '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
-            '</button>' +
-            '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
-            '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
-            '</button>');
+        if (item.role === "admin") {
+            $('#fuggolegesmenu').html('<button class="sm-btn-nav">' +
+                '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
+                '</button>' +
+                '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
+                '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
+                '</button>' +
+                '<button class="sm-btn-nav" onclick="">' +
+                '<i class="fas ml-3 mr-3 fa-clipboard-list"></i>View Logs' +
+                '</button>');
+        }
+        else {
+            $('#fuggolegesmenu').html('<button class="sm-btn-nav">' +
+                '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
+                '</button>' +
+                '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
+                '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
+                '</button>');
+        }
         
     }
     else {

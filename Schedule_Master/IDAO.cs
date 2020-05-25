@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using Microsoft.AspNetCore.Routing;
+using Npgsql;
 using Schedule_Master.Models;
 using System;
 using System.Collections.Generic;
@@ -71,7 +72,7 @@ namespace Schedule_Master
                 }
                 id = int.Parse(GetLastIDFromTable(conn, "users"));
             }
-            Users.Add(new UserModel(id, name, email, password));
+            Users.Add(new UserModel(id, name, email, password,"user"));
         }
 
         //-Schedule Functions-----------------------------------------------------------------------
@@ -109,7 +110,7 @@ namespace Schedule_Master
             GetUserByID(userid).AddSchedule(new ScheduleModel(id, title, userid));
         }
 
-        public List<ScheduleModel> GetSchedule(int id)
+        public List<ScheduleModel> GetSchedule(int id) //user id
         {
             List<ScheduleModel> all = new List<ScheduleModel>();
             foreach (ScheduleModel schedule in GetSchedules())
@@ -280,9 +281,10 @@ namespace Schedule_Master
                             int.Parse(reader["id"].ToString()),
                             reader["name"].ToString(),
                             reader["email"].ToString(),
-                            reader["password"].ToString()
+                            reader["password"].ToString(),
+                            reader["role"].ToString()
                             )
-                        );
+                        ) ;
                     }
                 }
             }
