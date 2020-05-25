@@ -37,6 +37,7 @@ namespace Schedule_Master.Controllers
             Singleton.CreateSchedule(table[0], int.Parse(table[1]));
         }
 
+        /*
         [HttpPost("Column")]
         public void Column(string[] table)
         {
@@ -50,6 +51,7 @@ namespace Schedule_Master.Controllers
             //column_id, hour
             Singleton.CreateSlot(int.Parse(table[0]), int.Parse(table[1]));
         }
+        */
 
         [HttpPost("Task")]
         public void Task(string[] table)

@@ -161,6 +161,7 @@ namespace Schedule_Master
                 id = int.Parse(GetLastIDFromTable(conn, "schedules"));
             }
             GetUserByID(userid).AddSchedule(new ScheduleModel(id, title, userid));
+            CreateColumnsAndSlots(id);
         }
 
         public List<ScheduleModel> GetSchedule(int id) //user id
@@ -315,6 +316,23 @@ namespace Schedule_Master
                 }
             }
             return value;
+        }
+
+        private void CreateColumnsAndSlots(int scheduleid)
+        {
+            string[] Days = new string[7]
+            {
+                "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+            };
+            var conn = new NpgsqlConnection(Program.ConnectionString);
+            conn.Open();
+
+            for (int i = 0; i < Days.Length; i++)
+            {
+                CreateColumn(Days[i], scheduleid);
+
+            }
+            conn.Close();
         }
 
         private void LoadFiles()
