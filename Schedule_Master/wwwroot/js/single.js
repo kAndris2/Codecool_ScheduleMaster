@@ -179,8 +179,8 @@ function getSchedule() {
         var arr = [];
         $.each(schedule, function (key, item) {
             //console.log([item]);
-            //if (item.start === item.end) { item.allDay = false; }
-            //else { item.allDay = true; }
+            if (item.start === item.end) { item.allDay = false; }
+            else { item.allDay = true; }
             item.start = new Date(item.start);
             item.end = new Date(item.end);
             arr.push(item);

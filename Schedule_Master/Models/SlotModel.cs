@@ -12,7 +12,7 @@ namespace Schedule_Master.Models
         public int Task_ID { get; }
         public int HourValue { get; }
 
-        public TaskModel Task { get; }
+        public TaskModel Task { get; private set; }
 
         public SlotModel(int id, int columnid, int taskid, int hour)
         {
@@ -21,5 +21,7 @@ namespace Schedule_Master.Models
             Task_ID = taskid;
             HourValue = hour;
         }
+
+        public void AddTask(TaskModel task) { Task = task; }
     }
 }

@@ -44,7 +44,8 @@ namespace Schedule_Master.Controllers
             long start_m = (long)(start - new DateTime(1970, 1, 1)).TotalMilliseconds;
             long end_m = (long)(end - new DateTime(1970, 1, 1)).TotalMilliseconds;
             //
-            Singleton.CreateSchedule(table[0], start_m, end_m, int.Parse(table[3]), table[4] == "true");
+            //Singleton.CreateSchedule(table[0], start_m, end_m, int.Parse(table[3]), table[4] == "true");
+            //Singleton.CreateSchedule();
         }
 
 

@@ -104,28 +104,25 @@ namespace Schedule_Master
             return value;
         }
 
-        public void CreateSchedule(string title, long start, long end, int userid, bool allday)
+        public void CreateSchedule(string title, int userid)
         {
             int id = 0;
             string sqlstr = "INSERT INTO schedules " +
-                                "(title, start_date, end_date, user_id, allday) " +
+                                "(title, userid) " +
                                 "VALUES " +
-                                    "(@title, @start, @end, @userid, @allday)";
+                                    "(@title, @userid)";
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
             {
                 conn.Open();
                 using (var cmd = new NpgsqlCommand(sqlstr, conn))
                 {
                     cmd.Parameters.AddWithValue("title", title);
-                    cmd.Parameters.AddWithValue("start", start);
-                    cmd.Parameters.AddWithValue("end", end);
                     cmd.Parameters.AddWithValue("userid", userid);
-                    cmd.Parameters.AddWithValue("allday", allday);
                     cmd.ExecuteNonQuery();
                 }
                 id = int.Parse(GetLastIDFromTable(conn, "schedules"));
             }
-            GetUserByID(userid).AddSchedule(new ScheduleModel(id, title, userid, start, end, allday));
+            GetUserByID(userid).AddSchedule(new ScheduleModel(id, title, userid));
         }
 
         public List<ScheduleModel> GetSchedule(int id)
@@ -176,10 +173,7 @@ namespace Schedule_Master
                         (
                         int.Parse(reader["id"].ToString()),
                         reader["title"].ToString(),
-                        int.Parse(reader["user_id"].ToString()),
-                        Convert.ToInt64(reader["start_date"].ToString()),
-                        Convert.ToInt64(reader["end_date"].ToString()),
-                        reader["allday"].ToString() == "True"
+                        int.Parse(reader["user_id"].ToString())
                         );
                         GetUserByID(schedule.User_ID).AddSchedule(schedule);
                     }

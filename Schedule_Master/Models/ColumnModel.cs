@@ -19,5 +19,7 @@ namespace Schedule_Master.Models
             Title = title;
             Schedule_ID = scheduleid;
         }
+
+        public void AddSlot(SlotModel slot) { Slots.Add(slot); }
     }
 }
