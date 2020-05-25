@@ -3,6 +3,7 @@ using Npgsql;
 using Schedule_Master.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -73,6 +74,58 @@ namespace Schedule_Master
                 id = int.Parse(GetLastIDFromTable(conn, "users"));
             }
             Users.Add(new UserModel(id, name, email, password,"user"));
+        }
+
+        public void AddToLog(int userid, string message)
+        {
+            DateTime localDate = DateTime.Now;
+            String[] cultureNames = { "hu-HU" };
+
+            var culture = new CultureInfo(cultureNames[0]);
+            
+            string date = localDate.ToString(culture);
+            
+
+            string sqlstr = "INSERT INTO logs " +
+                                "(date, message) " +
+                                "VALUES " +
+                                    "(@date, @message)";
+            using (var conn = new NpgsqlConnection(Program.ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand(sqlstr, conn))
+                {
+                    cmd.Parameters.AddWithValue("date", date);
+                    cmd.Parameters.AddWithValue("message", "User with id:"+ userid + " : " + message);
+                    cmd.ExecuteNonQuery();
+                }
+               
+            }
+        }
+
+        public List<LogModel> ReadLog()
+        {
+            List<LogModel> logs = new List<LogModel>();
+            using (var conn = new NpgsqlConnection(Program.ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand("SELECT * FROM logs", conn))
+                {
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        logs.Add(
+                            new LogModel
+                        (
+                        reader["date"].ToString(),
+                        reader["message"].ToString()
+                        ));
+                       
+                    }
+                }
+            }
+            return logs;
         }
 
         //-Schedule Functions-----------------------------------------------------------------------

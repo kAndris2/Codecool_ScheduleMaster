@@ -131,7 +131,7 @@ function status(item) {
                 '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
                 '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
                 '</button>' +
-                '<button class="sm-btn-nav" onclick="">' +
+                '<button class="sm-btn-nav" data-toggle="modal" data-target=".bd-example-modal-lg" onclick="getLog();">' +
                 '<i class="fas ml-3 mr-3 fa-clipboard-list"></i>View Logs' +
                 '</button>');
         }
@@ -167,6 +167,32 @@ function getUser() {
         }
     });
     return result;
+}
+
+function getLog() {
+    var user = getUser();
+    var log = null;
+    if (user.role != "admin") {
+        return null;
+    }
+    else {
+        $.ajax({
+            url: "/Data/log/",
+            type: 'get',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                log = data;
+            }
+        });
+
+        if (log != undefined || null) {
+            $.each(log, function (key, item) {
+                $("#log-content").append('<p>'+item.date+item.message+'</p>');
+            });
+        }
+        else { return null;}
+    }
 }
 
 function getSchedule() {
