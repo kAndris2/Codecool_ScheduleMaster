@@ -42,6 +42,10 @@ namespace Schedule_Master
         }
 
         public List<UserModel> Users = new List<UserModel>();
+        public List<ScheduleModel> Schedules = new List<ScheduleModel>();
+        public List<ColumnModel> Columns = new List<ColumnModel>();
+        public List<SlotModel> Slots = new List<SlotModel>();
+        public List<TaskModel> Tasks = new List<TaskModel>();
 
         private IDAO()
         {
@@ -133,6 +137,7 @@ namespace Schedule_Master
 
         public List<ScheduleModel> GetSchedules()
         {
+            /*
             List<ScheduleModel> schedules = new List<ScheduleModel>();
 
             foreach (UserModel user in Users)
@@ -141,6 +146,8 @@ namespace Schedule_Master
                     schedules.AddRange(user.Schedules);
             }
             return schedules;
+            */
+            return Schedules;
         }
 
         public void CreateSchedule(string title, int userid)
@@ -161,7 +168,8 @@ namespace Schedule_Master
                 }
                 id = int.Parse(GetLastIDFromTable(conn, "schedules"));
             }
-            GetUserByID(userid).AddSchedule(new ScheduleModel(id, title, userid));
+            //GetUserByID(userid).AddSchedule(new ScheduleModel(id, title, userid));
+            Schedules.Add(new ScheduleModel(id, title, userid));
             CreateColumnsAndSlots(id);
         }
 
@@ -197,20 +205,23 @@ namespace Schedule_Master
                 cmd.ExecuteNonQuery();
             }
             id = int.Parse(GetLastIDFromTable(connection, "columns"));
-            GetScheduleByID(scheduleid).AddColumn(new ColumnModel(id, title, scheduleid));
+            //GetScheduleByID(scheduleid).AddColumn(new ColumnModel(id, title, scheduleid));
+            Columns.Add(new ColumnModel(id, title, scheduleid));
         }
 
         public ColumnModel GetColumnByID(int id)
         {
-            foreach (ScheduleModel schedule in GetSchedules())
+            foreach (ColumnModel column in GetColumns())
             {
-                return schedule.Columns.FirstOrDefault(c => c.ID == id);
+                if (column.ID.Equals(id))
+                    return column;
             }
             throw new ArgumentException($"Invalid Column ID! ('{id}')");
         }
 
         public List<ColumnModel> GetColumns()
         {
+            /*
             List<ColumnModel> columns = new List<ColumnModel>();
 
             foreach(ScheduleModel schedule in GetSchedules())
@@ -219,6 +230,8 @@ namespace Schedule_Master
             }
 
             return columns;
+            */
+            return Columns;
         }
 
         //-Slot Functions---------------------------------------------------------------------------
@@ -236,11 +249,13 @@ namespace Schedule_Master
                 cmd.ExecuteNonQuery();
             }
             id = int.Parse(GetLastIDFromTable(connection, "slots"));
-            GetColumnByID(columnid).AddSlot(new SlotModel(id, columnid, hour));
+            //GetColumnByID(columnid).AddSlot(new SlotModel(id, columnid, hour));
+            Slots.Add(new SlotModel(id, columnid, hour));
         }
 
         public List<SlotModel> GetSlots()
         {
+            /*
             List<SlotModel> slots = new List<SlotModel>();
 
             foreach (ColumnModel column in GetColumns())
@@ -249,6 +264,8 @@ namespace Schedule_Master
             }
 
             return slots;
+            */
+            return Slots;
         }
 
         public SlotModel GetSlotByID(int id)
@@ -276,11 +293,13 @@ namespace Schedule_Master
                 }
                 id = int.Parse(GetLastIDFromTable(conn, "tasks"));
             }
-            GetSlotByID(slotid).AddTask(new TaskModel(id, title, content, slotid));
+            //GetSlotByID(slotid).AddTask(new TaskModel(id, title, content, slotid));
+            Tasks.Add(new TaskModel(id, title, content, slotid));
         }
 
         public List<TaskModel> GetTasks()
         {
+            /*
             List<TaskModel> tasks = new List<TaskModel>();
 
             foreach(SlotModel slot in GetSlots())
@@ -289,6 +308,8 @@ namespace Schedule_Master
             }
 
             return tasks;
+            */
+            return Tasks;
         }
 
         public TaskModel GetTaskByID(int id)
@@ -302,10 +323,12 @@ namespace Schedule_Master
             string value = "";
             using (var cmd = new NpgsqlCommand($"SELECT * FROM {table}", connection))
             {
-                var reader = cmd.ExecuteReader();
-                while (reader.Read())
+                using (var reader = cmd.ExecuteReader())
                 {
-                    value = reader["id"].ToString();
+                    while (reader.Read())
+                    {
+                        value = reader["id"].ToString();
+                    }
                 }
             }
             return value;
@@ -342,97 +365,95 @@ namespace Schedule_Master
                 conn.Open();
                 using (var cmd = new NpgsqlCommand("SELECT * FROM users", conn))
                 {
-                    var reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        Users.Add
-                        (
-                            new UserModel
+                        while (reader.Read())
+                        {
+                            Users.Add
                             (
-                            int.Parse(reader["id"].ToString()),
-                            reader["name"].ToString(),
-                            reader["email"].ToString(),
-                            reader["password"].ToString(),
-                            reader["role"].ToString()
-                            )
-                        ) ;
+                                new UserModel
+                                (
+                                int.Parse(reader["id"].ToString()),
+                                reader["name"].ToString(),
+                                reader["email"].ToString(),
+                                reader["password"].ToString(),
+                                reader["role"].ToString()
+                                )
+                            );
+                        }
                     }
                 }
-            }
-
-            using (var conn = new NpgsqlConnection(Program.ConnectionString))
-            {
-                conn.Open();
+          
                 using (var cmd = new NpgsqlCommand("SELECT * FROM schedules", conn))
                 {
-                    var reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        ScheduleModel schedule = new ScheduleModel
-                        (
-                        int.Parse(reader["id"].ToString()),
-                        reader["title"].ToString(),
-                        int.Parse(reader["user_id"].ToString())
-                        );
-                        GetUserByID(schedule.User_ID).AddSchedule(schedule);
+                        while (reader.Read())
+                        {
+                            ScheduleModel schedule = new ScheduleModel
+                            (
+                            int.Parse(reader["id"].ToString()),
+                            reader["title"].ToString(),
+                            int.Parse(reader["user_id"].ToString())
+                            );
+                            //GetUserByID(schedule.User_ID).AddSchedule(schedule);
+                            Schedules.Add(schedule);
+                        }
                     }
                 }
-            }
-
-            using (var conn = new NpgsqlConnection(Program.ConnectionString))
-            {
-                conn.Open();
+           
                 using (var cmd = new NpgsqlCommand("SELECT * FROM columns", conn))
                 {
-                    var reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        ColumnModel column = new ColumnModel
-                        (
-                        int.Parse(reader["id"].ToString()),
-                        reader["title"].ToString(),
-                        int.Parse(reader["schedule_id"].ToString())
-                        );
-                        GetScheduleByID(column.Schedule_ID).AddColumn(column);
+                        while (reader.Read())
+                        {
+                            ColumnModel column = new ColumnModel
+                            (
+                            int.Parse(reader["id"].ToString()),
+                            reader["title"].ToString(),
+                            int.Parse(reader["schedule_id"].ToString())
+                            );
+                            //GetScheduleByID(column.Schedule_ID).AddColumn(column);
+                            Columns.Add(column);
+                        }
                     }
                 }
-            }
-
-            using (var conn = new NpgsqlConnection(Program.ConnectionString))
-            {
-                conn.Open();
+          
                 using (var cmd = new NpgsqlCommand("SELECT * FROM slots", conn))
                 {
-                    var reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        SlotModel slot = new SlotModel
-                        (
-                        int.Parse(reader["id"].ToString()),
-                        int.Parse(reader["column_id"].ToString()),
-                        int.Parse(reader["hour_value"].ToString())
-                        );
-                        GetColumnByID(slot.Column_ID).AddSlot(slot);
+                        while (reader.Read())
+                        {
+                            SlotModel slot = new SlotModel
+                            (
+                            int.Parse(reader["id"].ToString()),
+                            int.Parse(reader["column_id"].ToString()),
+                            int.Parse(reader["hour_value"].ToString())
+                            );
+                            //GetColumnByID(slot.Column_ID).AddSlot(slot);
+                            Slots.Add(slot);
+                        }
                     }
                 }
-            }
-
-            using (var conn = new NpgsqlConnection(Program.ConnectionString))
-            {
-                conn.Open();
+            
                 using (var cmd = new NpgsqlCommand("SELECT * FROM tasks", conn))
                 {
-                    var reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        TaskModel task = new TaskModel
-                        (
-                        int.Parse(reader["id"].ToString()),
-                        reader["title"].ToString(),
-                        reader["content"].ToString(),
-                        int.Parse(reader["slot_id"].ToString())
-                        );
-                        GetSlotByID(task.Slot_ID).AddTask(task);
+                        while (reader.Read())
+                        {
+                            TaskModel task = new TaskModel
+                            (
+                            int.Parse(reader["id"].ToString()),
+                            reader["title"].ToString(),
+                            reader["content"].ToString(),
+                            int.Parse(reader["slot_id"].ToString())
+                            );
+                            //GetSlotByID(task.Slot_ID).AddTask(task);
+                            Tasks.Add(task);
+                        }
                     }
                 }
             }
