@@ -302,7 +302,7 @@ namespace Schedule_Master
             string value = "";
             using (var cmd = new NpgsqlCommand($"SELECT * FROM {table}", connection))
             {
-                var reader = cmd.ExecuteReader();
+                using var reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
                     value = reader["id"].ToString();
