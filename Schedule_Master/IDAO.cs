@@ -156,7 +156,8 @@ namespace Schedule_Master
             string sqlstr = "INSERT INTO schedules " +
                                 "(title, user_id) " +
                                 "VALUES " +
-                                    "(@title, @user_id)";
+                                    "(@title, @user_id) " +
+                                    "returning id";
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
             {
                 conn.Open();
@@ -164,10 +165,14 @@ namespace Schedule_Master
                 {
                     cmd.Parameters.AddWithValue("title", title);
                     cmd.Parameters.AddWithValue("user_id", userid);
-                    cmd.ExecuteNonQuery();
+                    //cmd.ExecuteNonQuery();
+                    var reader = cmd.ExecuteReader();
+                    reader.Read();
+                    id = (int)reader["id"];
                 }
-                id = int.Parse(GetLastIDFromTable(conn, "schedules"));
+                //id = int.Parse(GetLastIDFromTable(conn, "schedules"));
             }
+
             //GetUserByID(userid).AddSchedule(new ScheduleModel(id, title, userid));
             Schedules.Add(new ScheduleModel(id, title, userid));
             CreateColumnsAndSlots(id);
