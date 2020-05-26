@@ -72,7 +72,7 @@
     </div>
     <!-- SIDEBAR -->
     <div class="sm-sidenavbar">
-        <input type="button" value="Debug button boi" onclick="getLog();" />
+        <input type="button" value="Debug button boi" onclick="newSchedule();" />
 
         <!--<div class="sm-container">
         <i class="fas fa-exclamation fa-3x"></i>
@@ -203,7 +203,7 @@
                 </div>
 
                 <div class="modal-body" id="log-content">
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -213,6 +213,35 @@
         </div>
     </div>
     <!-- View Logs Modal end-->
+    <!--New Schedule-->
+    <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="scheduleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Create New Schedule</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="">
+                        <!---->
+                        <div class="form-group">
+                            <label asp-for="schedule" class="col-form-label">Name of the event:</label>
+                            <input asp-for="schedule" name="schedule" type="text" class="form-control" id="schedule-name">
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" onclick="newSchedule();"> Create Schedule </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--New Schedule modal end-->
 
 
     <script src="js/single.js"></script>

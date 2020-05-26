@@ -125,18 +125,18 @@ function status(item) {
             '<button onclick="logout();" class="sm-btn">Logout</button>');
 
         if (item.role === "admin") {
-            $('#fuggolegesmenu').html('<button class="sm-btn-nav">' +
+            $('#fuggolegesmenu').html('<button data-toggle="modal" data-target="#scheduleModal" class="sm-btn-nav">' +
                 '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
                 '</button>' +
                 '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
                 '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
                 '</button>' +
-                '<button class="sm-btn-nav" data-toggle="modal" data-target=".bd-example-modal-lg" onclick="getLog();">' +
+                '<button class="sm-btn-nav" data-toggle="modal" data-target=".bd-example-modal-lg">' +
                 '<i class="fas ml-3 mr-3 fa-clipboard-list"></i>View Logs' +
                 '</button>');
         }
         else {
-            $('#fuggolegesmenu').html('<button class="sm-btn-nav">' +
+            $('#fuggolegesmenu').html('<button data-toggle="modal" data-target="#scheduleModal" class="sm-btn-nav">' +
                 '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
                 '</button>' +
                 '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
@@ -177,7 +177,7 @@ function getLog() {
     }
     else {
         $.ajax({
-            url: "/Data/log/",
+            url: "/Data/log",
             type: 'get',
             dataType: 'json',
             async: false,
@@ -199,9 +199,7 @@ function getSchedule() {
     var user = getUser();
     var id = user.id;
     var date = new Date();
-    var d = date.getDate();
-    var m = date.getMonth();
-    var y = date.getFullYear();
+   
 
     var schedule = null;
 
@@ -240,10 +238,12 @@ function convert(str) {
 }
 
 
-
-
-
-
+function newSchedule() {
+    var user_id = getUser().id;
+    $.post("/Data/Schedule", { 'table': [$('#schedule-name').val(), user_id] }, function (data) {
+        console.log(data);
+    });
+}
 
 
 
@@ -259,6 +259,8 @@ $(document).ready(function () {
         var modal = $(this)
         modal.find('.modal-title').text('Registration')
     });
+    if (getUser()) { getLog();}
+    //getLog();
     status(getUser());
     cal();
 });

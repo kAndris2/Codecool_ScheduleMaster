@@ -58,9 +58,9 @@ namespace Schedule_Master
         {
             int id = 0;
             string sqlstr = "INSERT INTO users " +
-                                "(name, email, password) " +
+                                "(name, email, password, role) " +
                                 "VALUES " +
-                                    "(@name, @email, @password)";
+                                    "(@name, @email, @password, @role)";
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
             {
                 conn.Open();
@@ -69,6 +69,7 @@ namespace Schedule_Master
                     cmd.Parameters.AddWithValue("name", name);
                     cmd.Parameters.AddWithValue("email", email);
                     cmd.Parameters.AddWithValue("password", password);
+                    cmd.Parameters.AddWithValue("role", "user");
                     cmd.ExecuteNonQuery();
                 }
                 id = int.Parse(GetLastIDFromTable(conn, "users"));
@@ -146,16 +147,16 @@ namespace Schedule_Master
         {
             int id = 0;
             string sqlstr = "INSERT INTO schedules " +
-                                "(title, userid) " +
+                                "(title, user_id) " +
                                 "VALUES " +
-                                    "(@title, @userid)";
+                                    "(@title, @user_id)";
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
             {
                 conn.Open();
                 using (var cmd = new NpgsqlCommand(sqlstr, conn))
                 {
                     cmd.Parameters.AddWithValue("title", title);
-                    cmd.Parameters.AddWithValue("userid", userid);
+                    cmd.Parameters.AddWithValue("user_id", userid);
                     cmd.ExecuteNonQuery();
                 }
                 id = int.Parse(GetLastIDFromTable(conn, "schedules"));
