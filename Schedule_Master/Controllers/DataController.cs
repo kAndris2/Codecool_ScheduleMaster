@@ -18,9 +18,8 @@ namespace Schedule_Master.Controllers
         public List<UserModel> GetUsers() { return Singleton.Users; }
 
         [HttpGet("GetSchedules")]
-        public List<ScheduleModel> GetSchedules() { return Singleton.GetSchedules(); }
+        public List<ScheduleModel> GetSchedules() { return Singleton.Schedules; }
 
-        /*
         [HttpGet("GetColumns")]
         public List<ColumnModel> GetColumns() { return Singleton.Columns; }
 
@@ -29,24 +28,35 @@ namespace Schedule_Master.Controllers
 
         [HttpGet("GetTasks")]
         public List<TaskModel> GetTasks() { return Singleton.Tasks; }
-        */
 
         [HttpPost("Schedule")]
         public void Schedule(string[] table)
         {
-            /*
-             * DateTime date = DateTime.ParseExact(birth.Replace("-", "/"), "yyyy/MM/dd", CultureInfo.InvariantCulture);
-                milisec = (long)(date - new DateTime(1970, 1, 1)).TotalMilliseconds;
-             */
-            DateTime start = DateTime.ParseExact(table[1].Replace("-", "/"), "yyyy/MM/dd", CultureInfo.InvariantCulture);
-            DateTime end = DateTime.ParseExact(table[2].Replace("-", "/"), "yyyy/MM/dd", CultureInfo.InvariantCulture);
-
-            long start_m = (long)(start - new DateTime(1970, 1, 1)).TotalMilliseconds;
-            long end_m = (long)(end - new DateTime(1970, 1, 1)).TotalMilliseconds;
-            //
-            Singleton.CreateSchedule(table[0], start_m, end_m, int.Parse(table[3]), table[4] == "true");
+            Singleton.CreateSchedule(table[0], int.Parse(table[1]));
         }
 
+        /*
+        [HttpPost("Column")]
+        public void Column(string[] table)
+        {
+            //title, schedule_id
+            Singleton.CreateColumn(table[0], int.Parse(table[1]));
+        }
+
+        [HttpPost("Slot")]
+        public void Slot(string[] table)
+        {
+            //column_id, hour
+            Singleton.CreateSlot(int.Parse(table[0]), int.Parse(table[1]));
+        }
+        */
+
+        [HttpPost("Task")]
+        public void Task(string[] table)
+        {
+            //title, content, slotid
+            Singleton.CreateTask(table[0], table[1], int.Parse(table[2]));
+        }
 
         [HttpGet("schedule/{id}")]
         public List<ScheduleModel> ValidSchedule(int id)
@@ -56,6 +66,11 @@ namespace Schedule_Master.Controllers
             return schedule;
         }
 
+        [HttpGet ("log")]
+        public List<LogModel> GetLogs()
+        {
+            return Singleton.ReadLog();
+        }
     }
 }
         

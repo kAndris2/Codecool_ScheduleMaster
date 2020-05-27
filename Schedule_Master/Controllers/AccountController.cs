@@ -88,6 +88,8 @@ namespace Schedule_Master.Controllers
                 {
                     IDAO.Register(model.Username, model.Email, model.Password);
                     all.Add(model);
+                    
+                    IDAO.AddToLog(0, model.Username + " just registered!");
                     //await LoginAsync(model.Email, model.Password);
                     return all;
                 }
@@ -121,9 +123,10 @@ namespace Schedule_Master.Controllers
                 {
                     "Invalid e-mail/password!"
                 };
-                UserModel wrongUser = new UserModel(404,"","","");
+                UserModel wrongUser = new UserModel(404,"","","","");
                 wrongUser.Errors = errors;
                 all.Add(wrongUser);
+                IDAO.AddToLog(404, "Wrong login attempt with email:" + logindata[0]);
                 return all;
             }
 
@@ -163,6 +166,7 @@ namespace Schedule_Master.Controllers
             var cookie = Request.Cookies[".AspNetCore.Cookies"];
             user.cookie = cookie;
             all.Add(user);
+            IDAO.AddToLog(user.ID, "Logged in");
             return all;
         }
         
@@ -186,9 +190,18 @@ namespace Schedule_Master.Controllers
         [HttpGet ("Logout")]
         public void LogoutAsync()
         {
+            List<UserModel> users = _userService.GetAll();
+            int id = 0;
+            string name = "";
+            foreach (UserModel user in users)
+            {
+                if (user.Email == User.Claims.First().Value) { id = user.ID; name = user.Name; }
+            }
+
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             //return RedirectToAction("Login", "Account");
-
+            
+            IDAO.AddToLog(id, name + " logged out");
         }
     }
 }

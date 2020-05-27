@@ -120,15 +120,29 @@ function status(item) {
         $('div#masked').removeAttr('id');
         $('#user-Status').html('<i class="fas fa-user fa-2x mt-3 mb-3"></i>' +
             '<p> Welcome, <strong id="logged-user">' + item.name + '</strong></p>' +
-            '<p>' + item.email + '</p>'+
+            '<p>' + item.email + '</p>' +
+            '<p> Your role: ' + item.role + '</p>' +
             '<button onclick="logout();" class="sm-btn">Logout</button>');
 
-        $('#fuggolegesmenu').html('<button class="sm-btn-nav">' +
-            '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
-            '</button>' +
-            '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
-            '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
-            '</button>');
+        if (item.role === "admin") {
+            $('#fuggolegesmenu').html('<button data-toggle="modal" data-target="#scheduleModal" class="sm-btn-nav">' +
+                '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
+                '</button>' +
+                '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
+                '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
+                '</button>' +
+                '<button class="sm-btn-nav" data-toggle="modal" data-target=".bd-example-modal-lg">' +
+                '<i class="fas ml-3 mr-3 fa-clipboard-list"></i>View Logs' +
+                '</button>');
+        }
+        else {
+            $('#fuggolegesmenu').html('<button data-toggle="modal" data-target="#scheduleModal" class="sm-btn-nav">' +
+                '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
+                '</button>' +
+                '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
+                '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
+                '</button>');
+        }
         
     }
     else {
@@ -155,13 +169,37 @@ function getUser() {
     return result;
 }
 
+function getLog() {
+    var user = getUser();
+    var log = null;
+    if (user.role != "admin") {
+        return null;
+    }
+    else {
+        $.ajax({
+            url: "/Data/log",
+            type: 'get',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                log = data;
+            }
+        });
+
+        if (log != undefined || null) {
+            $.each(log, function (key, item) {
+                $("#log-content").append('<p>'+item.date+item.message+'</p>');
+            });
+        }
+        else { return null;}
+    }
+}
+
 function getSchedule() {
     var user = getUser();
     var id = user.id;
     var date = new Date();
-    var d = date.getDate();
-    var m = date.getMonth();
-    var y = date.getFullYear();
+   
 
     var schedule = null;
 
@@ -179,8 +217,8 @@ function getSchedule() {
         var arr = [];
         $.each(schedule, function (key, item) {
             //console.log([item]);
-            //if (item.start === item.end) { item.allDay = false; }
-            //else { item.allDay = true; }
+            if (item.start === item.end) { item.allDay = false; }
+            else { item.allDay = true; }
             item.start = new Date(item.start);
             item.end = new Date(item.end);
             arr.push(item);
@@ -200,10 +238,12 @@ function convert(str) {
 }
 
 
-
-
-
-
+function newSchedule() {
+    var user_id = getUser().id;
+    $.post("/Data/Schedule", { 'table': [$('#schedule-name').val(), user_id] }, function (data) {
+        console.log(data);
+    });
+}
 
 
 
@@ -219,6 +259,8 @@ $(document).ready(function () {
         var modal = $(this)
         modal.find('.modal-title').text('Registration')
     });
+    if (getUser()) { getLog();}
+    //getLog();
     status(getUser());
     cal();
 });

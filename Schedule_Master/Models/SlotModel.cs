@@ -9,17 +9,18 @@ namespace Schedule_Master.Models
     {
         public int ID { get; }
         public int Column_ID { get; }
-        public int Task_ID { get; }
         public int HourValue { get; }
 
-        public TaskModel Task { get; }
+        public List<TaskModel> Tasks = new List<TaskModel>();
 
-        public SlotModel(int id, int columnid, int taskid, int hour)
+        public SlotModel(int id, int columnid, int hour)
         {
             ID = id;
             Column_ID = columnid;
-            Task_ID = taskid;
             HourValue = hour;
         }
+
+        public void AddTask(TaskModel task) { Tasks.Add(task); }
+        public void RemoveTask(int taskid) { Tasks.Remove(Tasks.FirstOrDefault(t => t.ID == taskid)); }
     }
 }

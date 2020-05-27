@@ -7,17 +7,30 @@ namespace Schedule_Master.Models
 {
     public class ColumnModel
     {
+        const int MAX_SLOT = 24;
         public int ID { get; }
         public int Schedule_ID { get; }
         public String Title { get; private set; }
 
-        public List<SlotModel> Slots = new List<SlotModel>();
+        public SlotModel[] Slots = new SlotModel[MAX_SLOT];
 
         public ColumnModel(int id, string title, int scheduleid)
         {
             ID = id;
             Title = title;
             Schedule_ID = scheduleid;
+        }
+
+        public void AddSlot(SlotModel slot) 
+        { 
+            for (int i = 0; i < MAX_SLOT; i++)
+            {
+                if (Slots[i] != null)
+                {
+                    Slots[i] = slot;
+                    break;
+                }
+            }
         }
     }
 }

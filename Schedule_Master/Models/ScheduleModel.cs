@@ -7,24 +7,30 @@ namespace Schedule_Master.Models
 {
     public class ScheduleModel
     {
+        const int MAX_COLUMN = 7;
         public int ID { get; }
         public String Title { get; }
-        //public String Url { get; }
         public int User_ID { get; }
-        public long Start { get; }
-        public long End { get; }
-        public bool Allday { get; }
 
-        //public List<ColumnModel> Columns = new List<ColumnModel>();
+        public ColumnModel[] Columns = new ColumnModel[MAX_COLUMN];
 
-        public ScheduleModel(int id, string title, int userid, long start, long end, bool allday)
+        public ScheduleModel (int id, string title, int userid)
         {
             ID = id;
             Title = title;
             User_ID = userid;
-            Start = start;
-            End = end;
-            Allday = allday;
+        }
+
+        public void AddColumn(ColumnModel column) 
+        { 
+            for (int i = 0; i < MAX_COLUMN; i++)
+            {
+                if (Columns[i] != null)
+                {
+                    Columns[i] = column;
+                    break;
+                }
+            }
         }
     }
 }
