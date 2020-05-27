@@ -11,7 +11,7 @@ namespace Schedule_Master
 {
     public class Program
     {
-        public static readonly string ConnectionString = $"Host=mradmin.hu;Username=andris;Password=123qweAsD;Database=Schedule_Master";
+        public static readonly string ConnectionString = $"Host=localhost;Username=postgres;Password=admin;Database=sm2000";
 
         public static void Main(string[] args)
         {
