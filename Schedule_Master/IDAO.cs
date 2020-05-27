@@ -154,9 +154,11 @@ namespace Schedule_Master
                     cmd.Parameters.AddWithValue("title", title);
                     cmd.Parameters.AddWithValue("user_id", userid);
                     //
-                    var reader = cmd.ExecuteReader();
-                    reader.Read();
-                    id = (int)reader["id"];
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        id = (int)reader["id"];
+                    }
                 }
             }
             Schedules.Add(new ScheduleModel(id, title, userid));
@@ -194,9 +196,11 @@ namespace Schedule_Master
                 cmd.Parameters.AddWithValue("title", title);
                 cmd.Parameters.AddWithValue("scheduleid", scheduleid);
                 //
-                var reader = cmd.ExecuteReader();
-                reader.Read();
-                id = (int)reader["id"];
+                using (var reader = cmd.ExecuteReader())
+                {
+                    reader.Read();
+                    id = (int)reader["id"];
+                }
             }
             Columns.Add(new ColumnModel(id, title, scheduleid));
             return id;
@@ -213,6 +217,7 @@ namespace Schedule_Master
         }
 
         //-Slot Functions---------------------------------------------------------------------------
+        /*
         private void CreateSlot(NpgsqlConnection connection, int columnid, int hour)
         {
             int id = 0;
@@ -226,11 +231,38 @@ namespace Schedule_Master
                 cmd.Parameters.AddWithValue("columnid", columnid);
                 cmd.Parameters.AddWithValue("hour", hour);
                 //
-                var reader = cmd.ExecuteReader();
-                reader.Read();
-                id = (int)reader["id"];
+                using (var reader = cmd.ExecuteReader())
+                {
+                    reader.Read();
+                    id = (int)reader["id"];
+                }
             }
             Slots.Add(new SlotModel(id, columnid, hour));
+        }
+        */
+
+        private void GetSlotsByColumnID(NpgsqlConnection connection, int columnid)
+        {
+            string sqlstr = "SELECT * FROM slots " +
+                                $"WHERE column_id = {columnid}";
+            using (var cmd = new NpgsqlCommand(sqlstr, connection))
+            {
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Slots.Add
+                        (
+                            new SlotModel
+                            (
+                            int.Parse(reader["id"].ToString()),
+                            int.Parse(reader["column_id"].ToString()),
+                            int.Parse(reader["hour_value"].ToString())
+                            )
+                        );
+                    }
+                }
+            }
         }
 
         public SlotModel GetSlotByID(int id)
@@ -284,11 +316,13 @@ namespace Schedule_Master
                 for (int i = 0; i < Days.Length; i++)
                 {
                     int columnid = CreateColumn(conn, Days[i], scheduleid);
-
+                    GetSlotsByColumnID(conn, columnid);
+                    /*
                     for (int n = 0; n < 24; n++)
                     {
                         CreateSlot(conn, columnid, n + 1);
                     }
+                    */
                 }
             }
         }
