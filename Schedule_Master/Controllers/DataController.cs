@@ -18,9 +18,8 @@ namespace Schedule_Master.Controllers
         public List<UserModel> GetUsers() { return Singleton.Users; }
 
         [HttpGet("GetSchedules")]
-        public List<ScheduleModel> GetSchedules() { return Singleton.GetSchedules(); }
+        public List<ScheduleModel> GetSchedules() { return Singleton.Schedules; }
 
-        /*
         [HttpGet("GetColumns")]
         public List<ColumnModel> GetColumns() { return Singleton.Columns; }
 
@@ -29,7 +28,6 @@ namespace Schedule_Master.Controllers
 
         [HttpGet("GetTasks")]
         public List<TaskModel> GetTasks() { return Singleton.Tasks; }
-        */
 
         [HttpPost("Schedule")]
         public void Schedule(string[] table)

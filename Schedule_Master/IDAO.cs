@@ -84,6 +84,7 @@ namespace Schedule_Master
             Users.Add(new UserModel(id, name, email, password,"user"));
         }
 
+        //-Log Functions-----------------------------------------------------------------------------
         public void AddToLog(int userid, string message)
         {
             DateTime localDate = DateTime.Now;
