@@ -65,3 +65,24 @@ ALTER TABLE ONLY public.slots
 
 ALTER TABLE ONLY public.tasks
     ADD CONSTRAINT slot_id FOREIGN KEY (slot_id) REFERENCES public.slots(id) ON DELETE CASCADE;
+
+--FUNCTIONS..................................................................................................
+CREATE FUNCTION create_slots() RETURNS TRIGGER AS $$
+	BEGIN
+		FOR i in 1..24 LOOP
+			INSERT INTO slots
+				(column_id, hour_value)
+				VALUES
+				(NEW.id, i);
+		END LOOP;
+		RETURN NEW;
+			
+	END;
+	$$ LANGUAGE plpgsql;
+		
+
+--TRIGGERS..................................................................................................
+CREATE TRIGGER create_slots_trigger
+	AFTER INSERT ON columns
+	FOR EACH ROW
+		EXECUTE FUNCTION create_slots();
