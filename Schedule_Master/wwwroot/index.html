@@ -16,6 +16,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/schedule.css">
     <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
@@ -24,7 +25,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
           rel="stylesheet">
     <!--TEST-->
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
@@ -53,7 +54,7 @@
             z-index: 0;
         }
     </style>
-    
+
 </head>
 
 <body>
@@ -62,11 +63,15 @@
         <div id="masked" class="mask">
             <div id='wrap'>
 
-                <div id='calendar'>
+                <!--<div id='calendar'>
                     <h1>hooo</h1>
-                </div>
 
-                <div style='clear:both'></div>
+
+                <div style='clear:both'></div>-->
+                <!--TEST-->
+
+                
+                <!--TEST EDDIG-->
             </div>
         </div>
     </div>
@@ -231,7 +236,7 @@
                             <label asp-for="schedule" class="col-form-label">Name of the event:</label>
                             <input asp-for="schedule" name="schedule" type="text" class="form-control" id="schedule-name">
                         </div>
-                        
+
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -242,7 +247,8 @@
         </div>
     </div>
     <!--New Schedule modal end-->
-
+    <script src="js/util.js"></script> <!-- util functions  -->
+    <script src="js/sched_main.js"></script>
 
     <script src="js/single.js"></script>
 </body>
