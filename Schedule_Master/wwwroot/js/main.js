@@ -8,7 +8,7 @@ window.onload = function () {
     editSchedulesButton = this.document.getElementById("toggleEditSchedules");
     accordionEditSchedules = this.document.getElementById("accordionEditSchedules");
 
-    //registerButton.addEventListener("click", this.showRegisterForm);
+    registerButton.addEventListener("click", this.showRegisterForm);
     editSchedulesButton.addEventListener("click", this.toggleEditSchedules);
 
     loadSchedules();

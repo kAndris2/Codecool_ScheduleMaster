@@ -16,10 +16,17 @@ function addDay() {
 
         //add slots
         tbodyRows.forEach(tr => {
-            console.log(tr);
+            //console.log(tr);
 
             const td = document.createElement("td");
             td.innerText = days[count - 1] + "'s slot";
+            td.style.cursor = "pointer";
+
+            const tdHour = tr.querySelector("[data-hour]");     //Get the current row hour datacell
+
+            td.addEventListener("click", function () {
+                console.log("clicked " + days[count - 1] + " at " + tdHour.dataset.hour + ":00");
+            });
             tr.appendChild(td);
         });
     }
@@ -48,6 +55,11 @@ function fillHours(schedule) {
     for (let i = 0; i < 24; i++) {
         const tr = document.createElement("tr");
         const td = document.createElement("td");
+
+        const hourAttr = document.createAttribute("data-hour")
+        hourAttr.value = i;
+        td.setAttributeNode(hourAttr);
+
         td.classList.add("sm-bold");
 
         td.innerHTML = i + ":00";
@@ -66,7 +78,7 @@ window.onload = function () {
                         <thead> \
                         <tr> \
                         <!--empty row--> \
-                        <th>&nbsp;</th> \
+                        <th>HOURS</th> \
                         </tr> \
                         </thead> \
                         <tbody> \
