@@ -191,7 +191,7 @@ namespace Schedule_Master
         }
 
         //-Column Functions-------------------------------------------------------------------------
-        private void CreateColumn(NpgsqlConnection connection, string title, int scheduleid)
+        private int CreateColumn(NpgsqlConnection connection, string title, int scheduleid)
         {
             int id = 0;
             string sqlstr = "INSERT INTO columns " +
@@ -207,6 +207,8 @@ namespace Schedule_Master
             id = int.Parse(GetLastIDFromTable(connection, "columns"));
             //GetScheduleByID(scheduleid).AddColumn(new ColumnModel(id, title, scheduleid));
             Columns.Add(new ColumnModel(id, title, scheduleid));
+
+            return id;
         }
 
         public ColumnModel GetColumnByID(int id)
@@ -324,6 +326,10 @@ namespace Schedule_Master
             using (var cmd = new NpgsqlCommand($"SELECT * FROM {table}", connection))
             {
 
+                using var reader = cmd.ExecuteReader();
+                reader.Read();
+                value = reader["id"].ToString();
+                /*
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -331,6 +337,7 @@ namespace Schedule_Master
                         value = reader["id"].ToString();
                     }
                 }
+                */
             }
             return value;
         }
@@ -348,8 +355,7 @@ namespace Schedule_Master
 
                 for (int i = 0; i < Days.Length; i++)
                 {
-                    CreateColumn(conn, Days[i], scheduleid);
-                    int columnid = int.Parse(GetLastIDFromTable(conn, "columns"));
+                    int columnid = CreateColumn(conn, Days[i], scheduleid);
 
                     for (int n = 0; n < 24; n++)
                     {
