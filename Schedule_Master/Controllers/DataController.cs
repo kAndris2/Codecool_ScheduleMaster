@@ -35,6 +35,12 @@ namespace Schedule_Master.Controllers
             Singleton.CreateSchedule(table[0], int.Parse(table[1]));
         }
 
+        [HttpPost("GetUserSlots/{id}")]
+        public List<SlotModel> GetUserSlots(int id)
+        {
+            return Singleton.GetUserSlots(id);
+        }
+
         /*
         [HttpPost("Column")]
         public void Column(string[] table)

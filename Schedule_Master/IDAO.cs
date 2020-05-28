@@ -58,6 +58,22 @@ namespace Schedule_Master
             return Users.FirstOrDefault(u => u.ID == id);
         }
 
+        public List<SlotModel> GetUserSlots(int userid)
+        {
+            List<SlotModel> slots = new List<SlotModel>();
+            List<ColumnModel> columns = GetColumnsByScheduleID(GetScheduleByUserID(userid).ID);
+
+            foreach (ColumnModel column in columns)
+            {
+                foreach (SlotModel slot in Slots)
+                {
+                    if (slot.Column_ID.Equals(column.ID))
+                        slots.Add(slot);
+                }
+            }
+            return slots;
+        }
+
         public void Register(string name, string email, string password)
         {
             int id = 0;
@@ -182,6 +198,11 @@ namespace Schedule_Master
             return Schedules.FirstOrDefault(s => s.ID == id);
         }
 
+        private ScheduleModel GetScheduleByUserID(int userid)
+        {
+            return Schedules.FirstOrDefault(s => s.User_ID == userid);
+        }
+
         //-Column Functions-------------------------------------------------------------------------
         private int CreateColumn(NpgsqlConnection connection, string title, int scheduleid)
         {
@@ -214,6 +235,19 @@ namespace Schedule_Master
                     return column;
             }
             throw new ArgumentException($"Invalid Column ID! ('{id}')");
+        }
+
+        private List<ColumnModel> GetColumnsByScheduleID(int scheduleid)
+        {
+            List<ColumnModel> columns = new List<ColumnModel>();
+
+            foreach (ColumnModel column in Columns)
+            {
+                if (column.Schedule_ID.Equals(scheduleid))
+                    columns.Add(column);
+            }
+
+            return columns;
         }
 
         //-Slot Functions---------------------------------------------------------------------------

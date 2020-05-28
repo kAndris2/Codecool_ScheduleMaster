@@ -86,6 +86,17 @@ function fillHours(schedule) {
     addDay();
 }
 
+function getSlotOfUser(userid) {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", onLoadUserSlots);
+    xhr.open("POST", "Data/GetUsers/" + userid);
+    xhr.send();
+}
+
+function onLoadUserSlots() {
+    userSlots = JSON.parse(this.responseText);
+}
+
 window.addEventListener("load", function () {
     scheduleDiv = document.querySelector(".sm-schedule");
     scheduleDiv.innerHTML = "<table> \
@@ -100,4 +111,7 @@ window.addEventListener("load", function () {
                         </table>";
     fillHours(scheduleDiv);
 });
+
+const userSlots;
+getSlotOfUser(getUser().id);
 
