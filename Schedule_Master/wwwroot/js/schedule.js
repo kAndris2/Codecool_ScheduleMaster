@@ -25,7 +25,9 @@ function addDay() {
             const tdHour = tr.querySelector("[data-hour]");     //Get the current row hour datacell
 
             td.addEventListener("click", function () {
-                console.log("clicked " + days[count - 1] + " at " + tdHour.dataset.hour + ":00");
+                //console.log("clicked " + days[count - 1] + " at " + tdHour.dataset.hour + ":00");
+                var newTask = prompt('Enter your new task name:');
+                $.post("/Data/Task", { 'table': [newTask, 1] });
             });
             tr.appendChild(td);
         });

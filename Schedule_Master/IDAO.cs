@@ -271,13 +271,13 @@ namespace Schedule_Master
         }
 
         //-Task Functions---------------------------------------------------------------------------
-        public void CreateTask(string title, string content, int slotid)
+        public void CreateTask(string title, int slotid)
         {
             int id = 0;
             string sqlstr = "INSERT INTO tasks " +
-                                "(title, content, slot_id) " +
+                                "(title, slot_id) " +
                                 "VALUES " +
-                                    "(@title, @content, @slotid) " +
+                                    "(@title, @slotid) " +
                                 "returning id";
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
             {
@@ -285,7 +285,6 @@ namespace Schedule_Master
                 using (var cmd = new NpgsqlCommand(sqlstr, conn))
                 {
                     cmd.Parameters.AddWithValue("title", title);
-                    cmd.Parameters.AddWithValue("content", content);
                     cmd.Parameters.AddWithValue("slotid", slotid);
                     //
                     var reader = cmd.ExecuteReader();
@@ -293,7 +292,7 @@ namespace Schedule_Master
                     id = (int)reader["id"];
                 }
             }
-            Tasks.Add(new TaskModel(id, title, content, slotid));
+            Tasks.Add(new TaskModel(id, title, slotid));
         }
 
         public TaskModel GetTaskByID(int id)
@@ -422,7 +421,6 @@ namespace Schedule_Master
                                 (
                                 int.Parse(reader["id"].ToString()),
                                 reader["title"].ToString(),
-                                reader["content"].ToString(),
                                 int.Parse(reader["slot_id"].ToString())
                                 )
                             );

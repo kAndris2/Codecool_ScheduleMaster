@@ -12,11 +12,10 @@ namespace Schedule_Master.Models
         public String Title { get; private set; }
         public String Content { get; private set; }
 
-        public TaskModel(int id, string title, string content, int slotid)
+        public TaskModel(int id, string title, int slotid)
         {
             ID = id;
             Title = title;
-            Content = content;
             Slot_ID = slotid;
         }
     }

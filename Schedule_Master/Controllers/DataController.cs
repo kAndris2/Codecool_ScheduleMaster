@@ -54,8 +54,8 @@ namespace Schedule_Master.Controllers
         [HttpPost("Task")]
         public void Task(string[] table)
         {
-            //title, content, slotid
-            Singleton.CreateTask(table[0], table[1], int.Parse(table[2]));
+            //title, slotid
+            Singleton.CreateTask(table[0], int.Parse(table[1]));
         }
 
         [HttpGet("schedule/{id}")]
