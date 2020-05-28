@@ -155,6 +155,7 @@ function status(item) {
             '<button data-toggle="modal" data-target="#registerModal" class="sm-btn pull-left"> Register </button>');
         $('#fuggolegesmenu').html('');
     }
+    
 }
 
 function getUser() {
@@ -232,6 +233,87 @@ function getSchedule() {
 
 }
 
+
+function getColumns(scheduleId) {
+    var uri = "Data/GetColumns";
+    var columns = [];
+    $.getJSON(uri)
+        .done(function (data) {
+            $.each(data, function (key, item) {
+                if (item.schedule_ID === scheduleId) {
+                    columns.push(item.id);
+                }
+                else {
+                    //console.log("nincs columnja");
+                }
+            });
+        });
+    return columns;
+}
+
+function getSlots(columnId) {
+    var uri = "Data/GetSlots";
+    var slots = [];
+    $.getJSON(uri)
+        .done(function (data) {
+            $.each(columnId, function (sorsz, col_item) {
+                $.each(data, function (key, item) {
+                    if (col_item === item.column_ID) {
+                        slots.push(item.id);
+                    }
+                    else {
+                        //console.log("nincs slotja");
+                    }
+                    
+                });
+            });
+        });
+    return slots;
+}
+
+
+function getTasks(slotId) {
+    var uri = "Data/GetTasks";
+    var tasks = [];
+    $.getJSON(uri)
+        .done(function (data) {
+            $.each(data, function (key, item) {
+                $.each(slotId, function (sorsz, slot_item) {
+                    if (slot_item === item.slot_ID) {
+                        tasks.push(item.id);
+                    }
+                    else {
+                        //console.log("nincs taskja");
+                    }
+                    
+                });
+            });
+        });
+    return tasks;
+}
+
+function getAllId() {
+    var currUser = getUser();
+    var userId = currUser.id;
+    var currSchedule = getSchedule();
+    var scheduleId = currSchedule[0].id;
+
+    var columns = getColumns(scheduleId);
+    var slots = getSlots(columns);
+    var tasks = getTasks(slots);
+
+    //var allId = { "UserId": userId }, { "ScheduleId": scheduleId }, { "ColumnsId": [columns] }, { "SlotsId": [slots] }, { "TasksId": [tasks] };
+    var all = {
+        "UserId": userId,
+        "ScheduleId": scheduleId,
+        "ColumnsId": columns,
+        "SlotsId": slots,
+        "TasksId": tasks
+    }
+    return all;
+    
+}
+
 function convert(str) {
     var date = new Date(str),
         mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -248,11 +330,6 @@ function newSchedule() {
 }
 
 
-
-
-
-
-
 $(document).ready(function () {
     //jQuery.ajaxSettings.traditional = true;
     $('#registerModal').on('show.bs.modal', function (event) {
@@ -265,4 +342,5 @@ $(document).ready(function () {
     //getLog();
     status(getUser());
     //cal();
+    
 });

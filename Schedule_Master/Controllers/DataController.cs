@@ -66,6 +66,7 @@ namespace Schedule_Master.Controllers
             return schedule;
         }
 
+
         [HttpGet ("log")]
         public List<LogModel> GetLogs()
         {
