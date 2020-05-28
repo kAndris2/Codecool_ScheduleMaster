@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <script src="https://kit.fontawesome.com/e1f7535694.js" crossorigin="anonymous"></script>
-    <script src='js/schedule.js'></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
         rel="stylesheet">
     <!--TEST-->
@@ -115,7 +114,7 @@
     <!--MODALS! KEEP THEM HERE!-->
     <!-- Registration -->
     <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -145,7 +144,7 @@
                         <div class="form-group">
                             <label asp-for="confirm-password" class="col-form-label">Confirm Password:</label>
                             <input asp-for="confirm-password" type="password" class="form-control"
-                                id="confirm-password">
+                                   id="confirm-password">
                         </div>
                         <!--FOR THE ERRORS-->
                         <div id="regErrors" role="alert">
@@ -163,7 +162,7 @@
     <!--Registration modal end-->
     <!--Login-->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -203,7 +202,7 @@
     <!-- View Logs Modal-->
 
     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div id="log-modal" class="modal-content">
                 <div class="modal-header">
@@ -226,7 +225,7 @@
     <!-- View Logs Modal end-->
     <!--New Schedule-->
     <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="scheduleModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -241,7 +240,7 @@
                         <div class="form-group">
                             <label asp-for="schedule" class="col-form-label">Name of the event:</label>
                             <input asp-for="schedule" name="schedule" type="text" class="form-control"
-                                id="schedule-name">
+                                   id="schedule-name">
                         </div>
 
                     </form>
@@ -257,6 +256,7 @@
 
 
     <script src="js/single.js"></script>
+    <script src='js/schedule.js'></script>
     <script src='js/main.js'></script>
 </body>
 

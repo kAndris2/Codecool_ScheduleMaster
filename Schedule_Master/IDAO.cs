@@ -74,6 +74,11 @@ namespace Schedule_Master
             return slots;
         }
 
+        public List<ColumnModel> GetUserColumns(int userid)
+        {
+            return GetColumnsByScheduleID(GetScheduleByUserID(userid).ID);
+        }
+
         public void Register(string name, string email, string password)
         {
             int id = 0;

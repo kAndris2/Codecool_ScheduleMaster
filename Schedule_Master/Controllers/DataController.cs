@@ -41,6 +41,12 @@ namespace Schedule_Master.Controllers
             return Singleton.GetUserSlots(id);
         }
 
+        [HttpPost("GetUserColumns/{id}")]
+        public List<ColumnModel> GetUserColumns(int id)
+        {
+            return Singleton.GetUserColumns(id);
+        }
+
         /*
         [HttpPost("Column")]
         public void Column(string[] table)

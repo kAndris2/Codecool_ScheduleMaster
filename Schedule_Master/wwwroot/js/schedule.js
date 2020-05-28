@@ -27,7 +27,7 @@ function addDay() {
             td.addEventListener("click", function () {
                 //console.log("clicked " + days[count - 1] + " at " + tdHour.dataset.hour + ":00");
                 var newTask = prompt('Enter your new task name:');
-                $.post("/Data/Task", { 'table': [newTask, 1] });
+                $.post("/Data/Task", { 'table': [newTask, getSlotIDByDayHour(days[count - 1], tdHour.dataset.hour)] });
             });
             tr.appendChild(td);
         });
@@ -86,15 +86,40 @@ function fillHours(schedule) {
     addDay();
 }
 
+function getColumnsOfUser(userid) {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", onLoadUserColumns);
+    xhr.open("POST", "Data/GetUserColumns/" + userid);
+    xhr.send();
+}
+
+function onLoadUserColumns() {
+    userColumns = JSON.parse(this.responseText);
+}
+
 function getSlotOfUser(userid) {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener("load", onLoadUserSlots);
-    xhr.open("POST", "Data/GetUsers/" + userid);
+    xhr.open("POST", "Data/GetUserSlots/" + userid);
     xhr.send();
 }
 
 function onLoadUserSlots() {
     userSlots = JSON.parse(this.responseText);
+}
+
+function getSlotIDByDayHour(day, hour) {
+    let slotid;
+    userColumns.forEach((column) => {
+        if (column.title == day) {
+            userSlots.forEach((slot) => {
+                if (slot.column_ID == column.id && slot.hourValue == hour) {
+                    slotid = slot.id;
+                }
+            });
+        }
+    });
+    return slotid;
 }
 
 window.addEventListener("load", function () {
@@ -112,6 +137,9 @@ window.addEventListener("load", function () {
     fillHours(scheduleDiv);
 });
 
-const userSlots;
+let userColumns = null;
+getColumnsOfUser(getUser().id);
+//
+let userSlots = null;
 getSlotOfUser(getUser().id);
 
