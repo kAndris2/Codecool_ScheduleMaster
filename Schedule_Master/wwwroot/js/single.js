@@ -15,7 +15,7 @@ function getUsers() {
         .done(function (data) {
             $("#users").empty();
 
-            
+
             $.each(data, function (key, item) {
                 $('<li>', { text: formatItem(item) }).appendTo($('#users'));
             });
@@ -33,8 +33,8 @@ function formatItem(item) {
 
 
 function register() {
-    $.post("/Account/Register", { 'regdata' : [$('#username').val(),$('#email').val(),$('#password').val(),$('#confirm-password').val()] }, function (data) {
-        
+    $.post("/Account/Register", { 'regdata': [$('#username').val(), $('#email').val(), $('#password').val(), $('#confirm-password').val()] }, function (data) {
+
         $.each(data, function (key, item) {
             if (item.errors != null && item.errors.length > 0) {
                 $.each(item.errors, function (index, value) {
@@ -79,7 +79,7 @@ function login() {
 
             }
             else {
-                
+
                 $('#loginErrors').toggleClass('alert alert-success');
                 $('#loginErrors').html('Logged In!');
                 $('#logged-user').html(item.name);
@@ -90,13 +90,13 @@ function login() {
                         $('#loginModal').modal('toggle')
                         $('div#masked').removeAttr('id');
                     }, 800);
-               
+
                 location.reload();
                 status(item);
-                
+
             }
         });
-        
+
     });
 }
 
@@ -108,10 +108,10 @@ function logout() {
     setTimeout(
         function () {
             status(null);
-            
+
         }, 500);
     $('.mask').html('');
-    
+
 }
 
 function status(item) {
@@ -126,32 +126,34 @@ function status(item) {
 
         if (item.role === "admin") {
             $('#fuggolegesmenu').html('<button data-toggle="modal" data-target="#scheduleModal" class="sm-btn-nav">' +
-                '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
+                '<i class="fas fa-plus-circle ml-3 mr-3"></i>New schedule' +
                 '</button>' +
-                '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
-                '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
+                '<button id="mySchedulesButton" class="sm-btn-nav">' +
+                '<i class="fas fa-tasks ml-3 mr-3 animate"></i>My Schedules' +
                 '</button>' +
+                '<div id="accordionMySchedules" class="sm-accordion"></div>' +
                 '<button class="sm-btn-nav" data-toggle="modal" data-target=".bd-example-modal-lg">' +
                 '<i class="fas ml-3 mr-3 fa-clipboard-list"></i>View Logs' +
                 '</button>');
         }
         else {
             $('#fuggolegesmenu').html('<button data-toggle="modal" data-target="#scheduleModal" class="sm-btn-nav">' +
-                '<i class="fas fa-tasks ml-3 mr-3"></i>New schedule' +
+                '<i class="fas fa-plus-circle ml-3 mr-3"></i>New schedule' +
                 '</button>' +
-                '<button class="sm-btn-nav" onclick="toggleDropDown();">' +
-                '<i class="fas fa-cog ml-3 mr-3 animate-icon"></i>Edit schedules' +
-                '</button>');
+                '<button id="mySchedulesButton" class="sm-btn-nav">' +
+                '<i class="fas fa-tasks ml-3 mr-3 animate"></i>My schedules' +
+                '</button>' +
+                '<div id="accordionMySchedules" class="sm-accordion"></div>');
         }
-        
+
     }
     else {
         $('.mask').attr('id', 'masked');
         $('#user-Status').html('<i class="fas fa-exclamation fa-3x"></i>' +
-                        '<p>You are not logged in! Log in, or register.</p>' +
-                                    '<button data-toggle="modal" data-target="#loginModal" class="sm-btn pull-left" > Log In </button> ' +
-                        '<button data-toggle="modal" data-target="#registerModal" class="sm-btn pull-left"> Register </button>');
-                    $('#fuggolegesmenu').html('');
+            '<p>You are not logged in! Log in, or register.</p>' +
+            '<button data-toggle="modal" data-target="#loginModal" class="sm-btn pull-left" > Log In </button> ' +
+            '<button data-toggle="modal" data-target="#registerModal" class="sm-btn pull-left"> Register </button>');
+        $('#fuggolegesmenu').html('');
     }
 }
 
@@ -188,10 +190,10 @@ function getLog() {
 
         if (log != undefined || null) {
             $.each(log, function (key, item) {
-                $("#log-content").append('<p>'+item.date+item.message+'</p>');
+                $("#log-content").append('<p>' + item.date + item.message + '</p>');
             });
         }
-        else { return null;}
+        else { return null; }
     }
 }
 
@@ -199,12 +201,12 @@ function getSchedule() {
     var user = getUser();
     var id = user.id;
     var date = new Date();
-   
+
 
     var schedule = null;
 
     $.ajax({
-        url: "/Data/schedule/"+id,
+        url: "/Data/schedule/" + id,
         type: 'get',
         dataType: 'json',
         async: false,
@@ -212,7 +214,7 @@ function getSchedule() {
             schedule = data;
         }
     });
-    
+
     if (schedule != undefined || null) {
         var arr = [];
         $.each(schedule, function (key, item) {
@@ -223,11 +225,11 @@ function getSchedule() {
             item.end = new Date(item.end);
             arr.push(item);
         });
-        
+
         return arr;
     }
     else { return [{}]; }
-   
+
 }
 
 function convert(str) {
@@ -249,7 +251,7 @@ function newSchedule() {
 
 
 
-  
+
 
 $(document).ready(function () {
     //jQuery.ajaxSettings.traditional = true;
@@ -259,8 +261,8 @@ $(document).ready(function () {
         var modal = $(this)
         modal.find('.modal-title').text('Registration')
     });
-    if (getUser()) { getLog();}
+    if (getUser()) { getLog(); }
     //getLog();
     status(getUser());
-    cal();
+    //cal();
 });

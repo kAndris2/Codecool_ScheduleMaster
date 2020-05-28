@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <script src="https://kit.fontawesome.com/e1f7535694.js" crossorigin="anonymous"></script>
-    <script src='js/main.js'></script>
     <script src='js/schedule.js'></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
         rel="stylesheet">
@@ -78,8 +77,10 @@
 
         <button class="sm-btn" onclick="addDay()">+</button>
         <button class="sm-btn" onclick="removeDay()">-</button>
+        <button class="sm-btn" onclick="loadTasks()">lódtaszksz</button>
 
-        <div id="schedule-div" class="sm-schedule">
+        <div id="schedule-div" class="sm-schedule" data-current-schedule="">
+            <h6 value=data-current-schedule>Here should be the current schedule</h6>
         </div>
     </div>
     <!-- SIDEBAR -->
@@ -260,6 +261,7 @@
     <script src="js/sched_main.js"></script>
 
     <script src="js/single.js"></script>
+    <script src='js/main.js'></script>
 </body>
 
 </html>

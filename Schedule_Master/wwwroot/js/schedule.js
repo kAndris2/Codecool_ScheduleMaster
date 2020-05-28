@@ -51,6 +51,18 @@ function createSlots() {
 
 }
 
+function loadTasks() {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", onLoadTasks);
+    xhr.open("GET", "Data/GetUsers");
+    xhr.send();
+}
+
+function onLoadTasks() {
+    console.log(this.responseText);
+
+}
+
 function fillHours(schedule) {
     for (let i = 0; i < 24; i++) {
         const tr = document.createElement("tr");
@@ -72,7 +84,7 @@ function fillHours(schedule) {
     addDay();
 }
 
-window.onload = function () {
+window.addEventListener("load", function () {
     scheduleDiv = document.querySelector(".sm-schedule");
     scheduleDiv.innerHTML = "<table> \
                         <thead> \
@@ -85,5 +97,5 @@ window.onload = function () {
                         </tbody> \
                         </table>";
     fillHours(scheduleDiv);
-}
+});
 
