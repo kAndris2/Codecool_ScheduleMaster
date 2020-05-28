@@ -25,7 +25,9 @@ function addDay() {
             const tdHour = tr.querySelector("[data-hour]");     //Get the current row hour datacell
 
             td.addEventListener("click", function () {
-                console.log("clicked " + days[count - 1] + " at " + tdHour.dataset.hour + ":00");
+                //console.log("clicked " + days[count - 1] + " at " + tdHour.dataset.hour + ":00");
+                var newTask = prompt('Enter your new task name:');
+                $.post("/Data/Task", { 'table': [newTask, getSlotIDByDayHour(days[count - 1], tdHour.dataset.hour)] });
             });
             tr.appendChild(td);
         });
@@ -84,6 +86,42 @@ function fillHours(schedule) {
     addDay();
 }
 
+function getColumnsOfUser(userid) {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", onLoadUserColumns);
+    xhr.open("POST", "Data/GetUserColumns/" + userid);
+    xhr.send();
+}
+
+function onLoadUserColumns() {
+    userColumns = JSON.parse(this.responseText);
+}
+
+function getSlotOfUser(userid) {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", onLoadUserSlots);
+    xhr.open("POST", "Data/GetUserSlots/" + userid);
+    xhr.send();
+}
+
+function onLoadUserSlots() {
+    userSlots = JSON.parse(this.responseText);
+}
+
+function getSlotIDByDayHour(day, hour) {
+    let slotid;
+    userColumns.forEach((column) => {
+        if (column.title == day) {
+            userSlots.forEach((slot) => {
+                if (slot.column_ID == column.id && slot.hourValue == hour) {
+                    slotid = slot.id;
+                }
+            });
+        }
+    });
+    return slotid;
+}
+
 window.addEventListener("load", function () {
     scheduleDiv = document.querySelector(".sm-schedule");
     scheduleDiv.innerHTML = "<table> \
@@ -98,4 +136,10 @@ window.addEventListener("load", function () {
                         </table>";
     fillHours(scheduleDiv);
 });
+
+let userColumns = null;
+getColumnsOfUser(getUser().id);
+//
+let userSlots = null;
+getSlotOfUser(getUser().id);
 

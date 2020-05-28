@@ -35,6 +35,18 @@ namespace Schedule_Master.Controllers
             Singleton.CreateSchedule(table[0], int.Parse(table[1]));
         }
 
+        [HttpPost("GetUserSlots/{id}")]
+        public List<SlotModel> GetUserSlots(int id)
+        {
+            return Singleton.GetUserSlots(id);
+        }
+
+        [HttpPost("GetUserColumns/{id}")]
+        public List<ColumnModel> GetUserColumns(int id)
+        {
+            return Singleton.GetUserColumns(id);
+        }
+
         /*
         [HttpPost("Column")]
         public void Column(string[] table)
@@ -54,8 +66,8 @@ namespace Schedule_Master.Controllers
         [HttpPost("Task")]
         public void Task(string[] table)
         {
-            //title, content, slotid
-            Singleton.CreateTask(table[0], table[1], int.Parse(table[2]));
+            //title, slotid
+            Singleton.CreateTask(table[0], int.Parse(table[1]));
         }
 
         [HttpGet("schedule/{id}")]
