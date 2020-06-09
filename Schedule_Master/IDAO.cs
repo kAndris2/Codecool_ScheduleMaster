@@ -58,10 +58,10 @@ namespace Schedule_Master
             return Users.FirstOrDefault(u => u.ID == id);
         }
 
-        public List<SlotModel> GetUserSlots(int userid)
+        public List<SlotModel> GetSlotsOfSchedule(int scheduleid)
         {
             List<SlotModel> slots = new List<SlotModel>();
-            List<ColumnModel> columns = GetColumnsByScheduleID(GetScheduleByUserID(userid).ID);
+            List<ColumnModel> columns = GetColumnsByScheduleID(scheduleid);
 
             foreach (ColumnModel column in columns)
             {
@@ -74,9 +74,27 @@ namespace Schedule_Master
             return slots;
         }
 
-        public List<ColumnModel> GetUserColumns(int userid)
+        public List<TaskModel> GetScheduleTasks(int scheduleid)
         {
-            return GetColumnsByScheduleID(GetScheduleByUserID(userid).ID);
+            List<TaskModel> tasks = new List<TaskModel>();
+
+            foreach(SlotModel slot in GetSlotsOfSchedule(scheduleid))
+            {
+                foreach (TaskModel task in Tasks)
+                {
+                    if (task.Slot_ID.Equals(slot.ID))
+                    {
+                        tasks.Add(task);
+                    }
+                }
+            }
+
+            return tasks;
+        }
+
+        public ScheduleModel GetUserSchedule(int userid)
+        {
+            return Schedules.FirstOrDefault(s => s.User_ID == userid);
         }
 
         public void Register(string name, string email, string password)
@@ -242,7 +260,7 @@ namespace Schedule_Master
             throw new ArgumentException($"Invalid Column ID! ('{id}')");
         }
 
-        private List<ColumnModel> GetColumnsByScheduleID(int scheduleid)
+        public List<ColumnModel> GetColumnsByScheduleID(int scheduleid)
         {
             List<ColumnModel> columns = new List<ColumnModel>();
 
