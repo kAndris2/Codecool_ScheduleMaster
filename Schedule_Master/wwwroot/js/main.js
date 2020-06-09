@@ -45,7 +45,7 @@ function onLoadSchedulesFromDB() {
         item.innerText = schedule.title;
         item.classList.add("sm-btn-nav");
         item.addEventListener("click", function () {
-            scheduleDiv.dataset.currentschedule = schedule.title;
+            scheduleDiv.dataset.currentSchedule = schedule.title;
             console.log("clicked on " + schedule.title);
         });
         accordionMySchedules.appendChild(item);
