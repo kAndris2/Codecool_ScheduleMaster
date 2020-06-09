@@ -18,7 +18,17 @@ namespace Schedule_Master.Controllers
         public List<UserModel> GetUsers() { return Singleton.Users; }
 
         [HttpGet("GetSchedules")]
-        public List<ScheduleModel> GetSchedules() { return Singleton.Schedules; }
+        public List<ScheduleModel> GetSchedules(int userid)
+        {
+            if (userid == 0)
+            {
+                return Singleton.Schedules;
+            }
+            else
+            {
+                return Singleton.Schedules.Where(s => s.User_ID == userid).ToList();
+            }
+        }
 
         [HttpGet("GetColumns")]
         public List<ColumnModel> GetColumns() { return Singleton.Columns; }
@@ -91,11 +101,10 @@ namespace Schedule_Master.Controllers
         }
 
 
-        [HttpGet ("log")]
+        [HttpGet("log")]
         public List<LogModel> GetLogs()
         {
             return Singleton.ReadLog();
         }
     }
 }
-        

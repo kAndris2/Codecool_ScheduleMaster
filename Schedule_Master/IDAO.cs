@@ -78,7 +78,7 @@ namespace Schedule_Master
         {
             List<TaskModel> tasks = new List<TaskModel>();
 
-            foreach(SlotModel slot in GetSlotsOfSchedule(scheduleid))
+            foreach (SlotModel slot in GetSlotsOfSchedule(scheduleid))
             {
                 foreach (TaskModel task in Tasks)
                 {
@@ -120,7 +120,7 @@ namespace Schedule_Master
                     id = (int)reader["id"];
                 }
             }
-            Users.Add(new UserModel(id, name, email, password,"user"));
+            Users.Add(new UserModel(id, name, email, password, "user"));
         }
 
         //-Log Functions-----------------------------------------------------------------------------
@@ -130,9 +130,9 @@ namespace Schedule_Master
             String[] cultureNames = { "hu-HU" };
 
             var culture = new CultureInfo(cultureNames[0]);
-            
+
             string date = localDate.ToString(culture);
-            
+
 
             string sqlstr = "INSERT INTO logs " +
                                 "(date, message) " +
@@ -144,10 +144,10 @@ namespace Schedule_Master
                 using (var cmd = new NpgsqlCommand(sqlstr, conn))
                 {
                     cmd.Parameters.AddWithValue("date", date);
-                    cmd.Parameters.AddWithValue("message", "User with id:"+ userid + " : " + message);
+                    cmd.Parameters.AddWithValue("message", "User with id:" + userid + " : " + message);
                     cmd.ExecuteNonQuery();
                 }
-               
+
             }
         }
 
@@ -169,7 +169,7 @@ namespace Schedule_Master
                         reader["date"].ToString(),
                         reader["message"].ToString()
                         ));
-                       
+
                     }
                 }
             }
@@ -213,7 +213,6 @@ namespace Schedule_Master
             }
             if (all.Count > 0) { return all; }
             else { return null; }
-
         }
 
         public ScheduleModel GetScheduleByID(int id)
@@ -409,7 +408,7 @@ namespace Schedule_Master
                         }
                     }
                 }
-          
+
                 using (var cmd = new NpgsqlCommand("SELECT * FROM schedules", conn))
                 {
                     using (var reader = cmd.ExecuteReader())
@@ -428,7 +427,7 @@ namespace Schedule_Master
                         }
                     }
                 }
-           
+
                 using (var cmd = new NpgsqlCommand("SELECT * FROM columns", conn))
                 {
                     using (var reader = cmd.ExecuteReader())
@@ -447,7 +446,7 @@ namespace Schedule_Master
                         }
                     }
                 }
-          
+
                 using (var cmd = new NpgsqlCommand("SELECT * FROM slots", conn))
                 {
                     using (var reader = cmd.ExecuteReader())
@@ -466,7 +465,7 @@ namespace Schedule_Master
                         }
                     }
                 }
-            
+
                 using (var cmd = new NpgsqlCommand("SELECT * FROM tasks", conn))
                 {
                     using (var reader = cmd.ExecuteReader())

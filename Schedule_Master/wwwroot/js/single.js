@@ -8,6 +8,8 @@
 //xhr.open('GET', '/Data/GetSchedules');
 //xhr.send();
 
+let currentUser;
+
 function getUsers() {
     var uri = 'Data/GetUsers';
 
@@ -120,6 +122,7 @@ function status(item) {
         $('div#masked').removeAttr('id');
         $('#user-Status').html('<i class="fas fa-user fa-2x mt-3 mb-3"></i>' +
             '<p> Welcome, <strong id="logged-user">' + item.name + '</strong></p>' +
+            '<p> ID: ' + item.id + '</p>' +
             '<p>' + item.email + '</p>' +
             '<p> Your role: ' + item.role + '</p>' +
             '<button onclick="logout();" class="sm-btn">Logout</button>');
@@ -155,7 +158,7 @@ function status(item) {
             '<button data-toggle="modal" data-target="#registerModal" class="sm-btn pull-left"> Register </button>');
         $('#fuggolegesmenu').html('');
     }
-    
+
 }
 
 function getUser() {
@@ -264,7 +267,7 @@ function getSlots(columnId) {
                     else {
                         //console.log("nincs slotja");
                     }
-                    
+
                 });
             });
         });
@@ -285,7 +288,7 @@ function getTasks(slotId) {
                     else {
                         //console.log("nincs taskja");
                     }
-                    
+
                 });
             });
         });
@@ -311,7 +314,7 @@ function getAllId() {
         "TasksId": tasks
     }
     return all;
-    
+
 }
 
 function convert(str) {
@@ -341,6 +344,7 @@ $(document).ready(function () {
     if (getUser()) { getLog(); }
     //getLog();
     status(getUser());
+    currentUser = getUser();
     //cal();
-    
+
 });

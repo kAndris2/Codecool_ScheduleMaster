@@ -31,13 +31,13 @@ function loadSchedulesFromDB() {
     //load items from db
     const xhr = new XMLHttpRequest();
     xhr.addEventListener("load", onLoadSchedulesFromDB);
-    xhr.open("GET", "Data/GetSchedules")
+    xhr.open("GET", "Data/GetSchedules?userid=" + currentUser.id);
     xhr.send();
 }
 
 function onLoadSchedulesFromDB() {
     const schedules = JSON.parse(this.responseText);    //parse it
-    //console.log(schedules);
+    console.log(schedules);
 
     //create items
     schedules.forEach(schedule => {

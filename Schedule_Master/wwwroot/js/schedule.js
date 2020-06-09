@@ -22,7 +22,7 @@ function addDay() {
                 if (task.slot_ID == slot.id) {
                     td.innerText = task.title;
                 }
-                
+
             });
 
             //currTasks.filter(task => task.slot_ID == slot.id);
@@ -175,6 +175,7 @@ function fillHours(schedule) {
 function createSchedule() {
     document.getElementById("sch-title").innerHTML = userSchedule.title;
     scheduleDiv = document.querySelector(".sm-schedule");
+    scheduleDiv.childNodes[0].remove();
     scheduleDiv.innerHTML = "<table> \
                         <thead> \
                         <tr> \
