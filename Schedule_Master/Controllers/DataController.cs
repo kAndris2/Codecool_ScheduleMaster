@@ -35,16 +35,28 @@ namespace Schedule_Master.Controllers
             Singleton.CreateSchedule(table[0], int.Parse(table[1]));
         }
 
-        [HttpPost("GetUserSlots/{id}")]
-        public List<SlotModel> GetUserSlots(int id)
+        [HttpPost("GetSlotOfSchedule/{id}")]
+        public List<SlotModel> GetSlotOfSchedule(int id)
         {
-            return Singleton.GetUserSlots(id);
+            return Singleton.GetSlotsOfSchedule(id);
         }
 
-        [HttpPost("GetUserColumns/{id}")]
-        public List<ColumnModel> GetUserColumns(int id)
+        [HttpPost("GetColumnsOfSchedule/{id}")]
+        public List<ColumnModel> GetColumnsOfSchedule(int id)
         {
-            return Singleton.GetUserColumns(id);
+            return Singleton.GetColumnsByScheduleID(id);
+        }
+
+        [HttpPost("GetUserSchedule/{id}")]
+        public ScheduleModel GetUserSchedule(int id)
+        {
+            return Singleton.GetUserSchedule(id);
+        }
+
+        [HttpPost("GetTasksOfSchedule/{id}")]
+        public List<TaskModel> GetTasksOfSchedule(int id)
+        {
+            return Singleton.GetScheduleTasks(id);
         }
 
         /*
