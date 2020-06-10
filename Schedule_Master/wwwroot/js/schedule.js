@@ -118,7 +118,7 @@ function getColumnsOfSchedule(scheduleid) {
 
 function onLoadScheduleColumns() {
     currColumns = JSON.parse(this.responseText);
-    getSlotOfSchedule(userSchedule.id);
+    getSlotOfSchedule(currSchedule.id);
 }
 
 function getSlotOfSchedule(scheduleid) {
@@ -142,19 +142,18 @@ function onLoadScheduleTasks() {
 
 function onLoadScheduleSlots() {
     currSlots = JSON.parse(this.responseText);
-    getTasksOfSchedule(userSchedule.id);
+    getTasksOfSchedule(currSchedule.id);
 }
 
-function getUserSchedule(userid) {
+function getUserSchedules(userid) {
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener("load", onLoadUserSchedule);
-    xhr.open("POST", "Data/GetUserSchedule/" + userid);
+    xhr.addEventListener("load", onLoadUserSchedules);
+    xhr.open("POST", "Data/GetUserSchedules/" + userid);
     xhr.send();
 }
 
-function onLoadUserSchedule() {
-    userSchedule = JSON.parse(this.responseText);
-    getColumnsOfSchedule(userSchedule.id);
+function onLoadUserSchedules() {
+    userSchedules = JSON.parse(this.responseText);
 }
 
 function fillHours(schedule) {
@@ -180,7 +179,7 @@ function fillHours(schedule) {
 }
 
 function createSchedule() {
-    document.getElementById("sch-title").innerHTML = userSchedule.title;
+    document.getElementById("sch-title").innerHTML = currSchedule.title;
     scheduleDiv = document.querySelector(".sm-schedule");
     scheduleDiv.childNodes[0].remove();
     scheduleDiv.innerHTML = "<table> \
@@ -216,9 +215,10 @@ function getSlotsByColumnID(columnid) {
     return slots;
 }
 
-let userSchedule = null;
+let userSchedules = null;
+let currSchedule = null;
 let currColumns = null;
 let currSlots = null;
 let currTasks = null;
-getUserSchedule(getUser().id);
+getUserSchedules(getUser().id);
 

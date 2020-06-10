@@ -92,9 +92,17 @@ namespace Schedule_Master
             return tasks;
         }
 
-        public ScheduleModel GetUserSchedule(int userid)
+        public List<ScheduleModel> GetUserSchedules(int userid)
         {
-            return Schedules.FirstOrDefault(s => s.User_ID == userid);
+            List<ScheduleModel> schedules = new List<ScheduleModel>();
+
+            foreach (ScheduleModel schedule in Schedules)
+            {
+                if (schedule.User_ID.Equals(userid))
+                    schedules.Add(schedule);
+            }
+
+            return schedules;
         }
 
         public void Register(string name, string email, string password)
