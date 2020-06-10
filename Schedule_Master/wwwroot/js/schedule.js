@@ -18,14 +18,13 @@ function addDay() {
 
             td.setAttribute('slotid', slot.id);
 
+            let title = '-';
             currTasks.forEach(task => {
                 if (task.slot_ID == slot.id) {
-                    td.innerText = task.title;
+                    title = task.title;
                 }
-
             });
-
-            //currTasks.filter(task => task.slot_ID == slot.id);
+            td.innerText = title;
 
             td.style.cursor = "pointer";
 
