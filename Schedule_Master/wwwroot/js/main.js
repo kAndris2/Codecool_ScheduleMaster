@@ -8,7 +8,8 @@ window.addEventListener("load", function () {
 
     mySchedulesButton.addEventListener("click", toggleMySchedules);
 
-    loadSchedulesFromDB();
+    //loadSchedulesFromDB();
+    getMySchedules();
 });
 
 function toggleMySchedules() {
@@ -27,6 +28,7 @@ function toggleAccordion(HTMLElement) {
     }
 }
 
+/*
 function loadSchedulesFromDB() {
     //load items from db
     const xhr = new XMLHttpRequest();
@@ -34,20 +36,23 @@ function loadSchedulesFromDB() {
     xhr.open("GET", "Data/GetSchedules?userid=" + currentUser.id);
     xhr.send();
 }
+*/
 
-function onLoadSchedulesFromDB() {
-    const schedules = JSON.parse(this.responseText);    //parse it
-    console.log(schedules);
-
-    //create items
-    schedules.forEach(schedule => {
+//function onLoadSchedulesFromDB() {
+function getMySchedules() {
+    userSchedules.forEach(schedule => {
         const item = document.createElement("button");
+
         item.innerText = schedule.title;
         item.classList.add("sm-btn-nav");
+
         item.addEventListener("click", function () {
-            scheduleDiv.dataset.currentSchedule = schedule.title;
-            console.log("clicked on " + schedule.title);
+            //scheduleDiv.dataset.currentSchedule = schedule.title;
+            //console.log("clicked on " + schedule.title);
+            currSchedule = schedule;
+            getColumnsOfSchedule(schedule.id);
         });
+
         accordionMySchedules.appendChild(item);
     });
 }

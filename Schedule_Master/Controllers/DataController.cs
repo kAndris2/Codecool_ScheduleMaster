@@ -57,10 +57,10 @@ namespace Schedule_Master.Controllers
             return Singleton.GetColumnsByScheduleID(id);
         }
 
-        [HttpPost("GetUserSchedule/{id}")]
-        public ScheduleModel GetUserSchedule(int id)
+        [HttpPost("GetUserSchedules/{id}")]
+        public List<ScheduleModel> GetUserSchedule(int id)
         {
-            return Singleton.GetUserSchedule(id);
+            return Singleton.GetUserSchedules(id);
         }
 
         [HttpPost("GetTasksOfSchedule/{id}")]
