@@ -30,9 +30,20 @@ function addDay() {
             td.style.cursor = "pointer";
 
             td.addEventListener("click", function () {
-                var newTask = prompt('Enter your new task name: ' + slot.id);
-                document.querySelector(`[slotid="${slot.id}"]`).innerText = newTask;
-                $.post("/Data/Task", { 'table': [newTask, slot.id] });
+                let minC = '(min 3 character!)';
+                if (!isSlotContainsTask(slot.id)) {
+                    var newTask = prompt('[CREATE]:\nEnter your new task name:\n' + minC);
+                    if (newTask.length >= 3) {
+                        document.querySelector(`[slotid="${slot.id}"]`).innerText = newTask;
+                        $.post("/Data/Task", { 'table': [newTask, slot.id] });
+                    }
+                } else {
+                    var updateTask = prompt('[EDIT]:\nEnter a new title for your task:\n' + minC);
+                    if (updateTask.length >= 3) {
+                        document.querySelector(`[slotid="${slot.id}"]`).innerText = updateTask;
+                        $.post("/Data/UpdateTask", { 'data': [updateTask, slot.id] });
+                    }
+                }
             });
             tr.appendChild(td);
             tbody.appendChild(tr);
@@ -189,14 +200,14 @@ function createSchedule() {
     fillHours(scheduleDiv);
 }
 
-function getTaskBySlotID(slotid) {
+function isSlotContainsTask(slotid) {
+    let check = false;
     currTasks.forEach(task => {
         if (task.slot_ID == slotid) {
-            console.log('talalt: ' + task.title);
-            return task.title;
+            check = true;
         }
     });
-    console.log('fucked!');
+    return check;
 }
 
 function getSlotIDByDayHour(day, hour) {

@@ -356,6 +356,23 @@ namespace Schedule_Master
             return Tasks.FirstOrDefault(t => t.ID == id);
         }
 
+        public void EditTask(string title, int slotid)
+        {
+            string sqlstr = "UPDATE tasks " +
+                            "SET title = @title " +
+                            "WHERE slot_id = @id";
+            using (var conn = new NpgsqlConnection(Program.ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand(sqlstr, conn))
+                {
+                    cmd.Parameters.AddWithValue("title", title);
+                    cmd.Parameters.AddWithValue("id", slotid);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         //-Other Functions---------------------------------------------------------------------------
 
         private void CreateColumnsAndSlots(int scheduleid)

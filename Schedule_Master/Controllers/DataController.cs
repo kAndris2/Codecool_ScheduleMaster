@@ -85,6 +85,13 @@ namespace Schedule_Master.Controllers
         }
         */
 
+        [HttpPost("UpdateTask")]
+        public void UpdateTask(string[] data)
+        {
+            //title, slotid
+            Singleton.EditTask(data[0], int.Parse(data[1]));
+        }
+
         [HttpPost("Task")]
         public void Task(string[] table)
         {
