@@ -1,6 +1,16 @@
 //globals
 let scheduleDiv;
 
+function getTaskBySlotID(slotid) {
+    let result = null;
+    currTasks.forEach(task => {
+        if (task.slot_ID == slotid) {
+            result = task;
+        }
+    });
+    return result;
+}
+
 function addDay() {
     const theadRow = scheduleDiv.querySelector("thead > tr");
     const tbody = scheduleDiv.querySelector("tbody");
@@ -30,13 +40,29 @@ function addDay() {
             td.addEventListener("click", function () {
                 let minC = '(min 3 character!)';
                 if (!isSlotContainsTask(slot.id)) {
-                    var newTask = prompt('[CREATE]:\nEnter your new task name:\n' + minC);
+                    var newTask = prompt
+                        (
+                            '[CREATE]:\n' +
+                            '- slotID: ' + slot.id +
+                            '\n\nEnter your new task name: \n' +
+                            minC
+                        );
                     if (newTask.length >= 3) {
                         document.querySelector(`[slotid="${slot.id}"]`).innerText = newTask;
                         $.post("/Data/Task", { 'table': [newTask, slot.id] });
                     }
                 } else {
-                    var updateTask = prompt('[EDIT]:\nEnter a new title for your task:\n' + minC);
+                    let task = getTaskBySlotID(slot.id);
+                    var updateTask = prompt
+                        (
+                            '[EDIT]:\n' +
+                            '- slotID: ' + slot.id +
+                            '\n- Hour: ' + (slot.hourValue - 1) +
+                            '\n- taskID: ' + task.id +
+                            '\n- Title: ' + task.title +
+                            '\n\nEnter a new title for your task:\n' +
+                            minC
+                        );
                     if (updateTask.length >= 3) {
                         document.querySelector(`[slotid="${slot.id}"]`).innerText = updateTask;
                         $.post("/Data/UpdateTask", { 'data': [updateTask, slot.id] });
