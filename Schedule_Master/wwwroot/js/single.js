@@ -375,6 +375,25 @@ function newSchedule() {
 }
 
 
+$(function () {
+	$.contextMenu({
+		selector: '.context-menu-one',
+		callback: function (key, options) {
+			var m = "clicked: " + key;
+			window.console && console.log(m) || alert(m);
+		},
+		items: {
+			"details": { name: "Details", icon: "fas fa-eye" },
+			"edit": { name: "Edit", icon: "far fa-edit" },
+			"delete": { name: "Delete", icon: "delete" }
+		}
+	});
+
+	$('.context-menu-one').on('click', function (e) {
+		console.log('clicked', this);
+	})
+});
+
 $(document).ready(function () {
 	//jQuery.ajaxSettings.traditional = true;
 	$('#registerModal').on('show.bs.modal', function (event) {

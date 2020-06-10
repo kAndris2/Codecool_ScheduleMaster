@@ -26,6 +26,8 @@ function addDay() {
             const td = document.createElement("td");
 
             td.setAttribute('slotid', slot.id);
+            //Right click classes
+            td.setAttribute('class', 'context-menu-one');
 
             let title = '-';
             currTasks.forEach(task => {
