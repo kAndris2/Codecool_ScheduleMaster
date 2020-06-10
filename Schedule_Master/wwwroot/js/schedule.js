@@ -41,6 +41,8 @@ function addDay() {
 
             td.addEventListener("click", function () {
                 let minC = '(min 3 character!)';
+                clickedSlot = slot;
+
                 if (!isSlotContainsTask(slot.id)) {
                     var newTask = prompt
                         (
@@ -220,5 +222,6 @@ let currSchedule = null;
 let currColumns = null;
 let currSlots = null;
 let currTasks = null;
+let clickedSlot = null;
 getUserSchedules(getUser().id);
 

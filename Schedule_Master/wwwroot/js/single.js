@@ -379,8 +379,22 @@ $(function () {
 	$.contextMenu({
 		selector: '.context-menu-one',
 		callback: function (key, options) {
+			//let task = getTaskBySlotID(clickedSlot.id);
+			/*
+			if (key == 'details') {
+				alert
+				(
+					`Slot ID: ${clickedSlot.id}\n` +
+					`Hour: ${(clickedSlot.hourValue - 1)}\n`
+					//`Task ID: ${task.id}\n` +
+					//`Title: ${task.title}`
+				);
+            }
+			*/
+			
 			var m = "clicked: " + key;
 			window.console && console.log(m) || alert(m);
+			
 		},
 		items: {
 			"details": { name: "Details", icon: "fas fa-eye" },
@@ -389,9 +403,11 @@ $(function () {
 		}
 	});
 
+	/*
 	$('.context-menu-one').on('click', function (e) {
 		console.log('clicked', this);
 	})
+	*/
 });
 
 $(document).ready(function () {
