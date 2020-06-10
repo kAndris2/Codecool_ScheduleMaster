@@ -7,7 +7,6 @@ function addDay() {
 
     currColumns.forEach(column => {
         const th = document.createElement("th");
-        let task = null;
         th.textContent = column.title;
         theadRow.appendChild(th);
         //
@@ -49,36 +48,6 @@ function addDay() {
             i++;
         });
     });
-
-    /*
-    const count = theadRow.childElementCount;
-    console.log(count);
-
-    if (count < 8) {
-        //add day headers
-        const th = document.createElement("th");
-        th.textContent = days[count - 1];
-        theadRow.appendChild(th);
-
-        //add slots
-        tbodyRows.forEach(tr => {
-            //console.log(tr);
-
-            const td = document.createElement("td");
-            td.innerText = days[count - 1] + "'s slot";
-            td.style.cursor = "pointer";
-
-            const tdHour = tr.querySelector("[data-hour]");     //Get the current row hour datacell
-
-            td.addEventListener("click", function () {
-                //console.log("clicked " + days[count - 1] + " at " + tdHour.dataset.hour + ":00");
-                var newTask = prompt('Enter your new task name:');
-                $.post("/Data/Task", { 'table': [newTask, getSlotIDByDayHour(days[count - 1], tdHour.dataset.hour)] });
-            });
-            tr.appendChild(td);
-        });
-    }
-    */
 }
 
 function removeDay() {
@@ -209,20 +178,6 @@ function isSlotContainsTask(slotid) {
     return check;
 }
 
-function getSlotIDByDayHour(day, hour) {
-    let slotid;
-    currColumns.forEach((column) => {
-        if (column.title == day) {
-            currSlots.forEach((slot) => {
-                if (slot.column_ID == column.id && slot.hourValue == hour) {
-                    slotid = slot.id;
-                }
-            });
-        }
-    });
-    return slotid;
-}
-
 function getSlotsByColumnID(columnid) {
     slots = new Array();
     currSlots.forEach(slot => {
@@ -232,23 +187,6 @@ function getSlotsByColumnID(columnid) {
     });
     return slots;
 }
-
-/*
-window.addEventListener("load", function () {
-    scheduleDiv = document.querySelector(".sm-schedule");
-    scheduleDiv.innerHTML = "<table> \
-                        <thead> \
-                        <tr> \
-                        <!--empty row--> \
-                        <th>HOURS</th> \
-                        </tr> \
-                        </thead> \
-                        <tbody> \
-                        </tbody> \
-                        </table>";
-    fillHours(scheduleDiv);
-});
-*/
 
 let userSchedule = null;
 let currColumns = null;
