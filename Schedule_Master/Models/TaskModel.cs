@@ -18,5 +18,10 @@ namespace Schedule_Master.Models
             Title = title;
             Slot_ID = slotid;
         }
+
+        public void Update(string title)
+        {
+            Title = title;
+        }
     }
 }

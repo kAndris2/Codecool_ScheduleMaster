@@ -1,5 +1,8 @@
 //globals
 let scheduleDiv;
+const minTaskChar = 3;
+let showMinChar = `(min ${minTaskChar} character!)`;
+const emptyCell = "-";
 
 function getTaskBySlotID(slotid) {
     let result = null;
@@ -29,7 +32,7 @@ function addDay() {
             //Right click classes
             td.setAttribute('class', 'context-menu-one');
 
-            let title = '-';
+            let title = emptyCell;
             currTasks.forEach(task => {
                 if (task.slot_ID == slot.id) {
                     title = task.title;
@@ -40,7 +43,6 @@ function addDay() {
             td.style.cursor = "pointer";
 
             td.addEventListener("click", function () {
-                let minC = '(min 3 character!)';
                 clickedSlot = slot;
 
                 if (!isSlotContainsTask(slot.id)) {
@@ -49,27 +51,11 @@ function addDay() {
                             '[CREATE]:\n' +
                             '- slotID: ' + slot.id +
                             '\n\nEnter your new task name: \n' +
-                            minC
+                            showMinChar
                         );
                     if (newTask.length >= 3) {
                         document.querySelector(`[slotid="${slot.id}"]`).innerText = newTask;
                         $.post("/Data/Task", { 'table': [newTask, slot.id] });
-                    }
-                } else {
-                    let task = getTaskBySlotID(slot.id);
-                    var updateTask = prompt
-                        (
-                            '[EDIT]:\n' +
-                            '- slotID: ' + slot.id +
-                            '\n- Hour: ' + (slot.hourValue - 1) +
-                            '\n- taskID: ' + task.id +
-                            '\n- Title: ' + task.title +
-                            '\n\nEnter a new title for your task:\n' +
-                            minC
-                        );
-                    if (updateTask.length >= 3) {
-                        document.querySelector(`[slotid="${slot.id}"]`).innerText = updateTask;
-                        $.post("/Data/UpdateTask", { 'data': [updateTask, slot.id] });
                     }
                 }
             });
@@ -224,4 +210,58 @@ let currSlots = null;
 let currTasks = null;
 let clickedSlot = null;
 getUserSchedules(getUser().id);
+
+$(function () {
+    $.contextMenu({
+        selector: '.context-menu-one',
+        callback: function (key, options) {
+            let task = getTaskBySlotID(clickedSlot.id);
+
+            if (key == 'details') {
+                alert
+                    (
+                        "[DETAILS]:\n\n" +
+                        `Slot ID: ${clickedSlot.id}\n` +
+                        `Hour: ${(clickedSlot.hourValue - 1)}\n\n` +
+                        `Task ID: ${task.id}\n` +
+                        `Title: ${task.title}`
+                    );
+            }
+            else if (key == 'edit') {
+                var updateTask = prompt
+                    (
+                        '[EDIT]:\n\n' +
+                        `Enter a new title for your task: (${task.title})\n` +
+                        showMinChar
+                    );
+                if (updateTask.length >= 3) {
+                    document.querySelector(`[slotid="${clickedSlot.id}"]`).innerText = updateTask;
+                    $.post("/Data/UpdateTask", { 'data': [updateTask, clickedSlot.id] });
+                }
+            }
+            else if (key == 'delete') {
+                if (confirm(`[DELETE]:\n\nAre you sure you want to delete this task?\n(${task.title})`)) {
+                    document.querySelector(`[slotid="${clickedSlot.id}"]`).innerText = emptyCell;
+                    $.post("/Data/DeleteTask", { 'data': [clickedSlot.id] });
+                }
+            }
+
+            /*
+			var m = "clicked: " + key;
+			window.console && console.log(m) || alert(m);
+            */
+        },
+        items: {
+            "details": { name: "Details", icon: "fas fa-eye" },
+            "edit": { name: "Edit", icon: "far fa-edit" },
+            "delete": { name: "Delete", icon: "delete" }
+        }
+    });
+
+	/*
+	$('.context-menu-one').on('click', function (e) {
+		console.log('clicked', this);
+	})
+	*/
+});
 

@@ -85,6 +85,12 @@ namespace Schedule_Master.Controllers
         }
         */
 
+        [HttpPost("DeleteTask")]
+        public void DeleteTask(string[] data)
+        {
+            Singleton.DeleteTask(int.Parse(data[0]));
+        }
+
         [HttpPost("UpdateTask")]
         public void UpdateTask(string[] data)
         {

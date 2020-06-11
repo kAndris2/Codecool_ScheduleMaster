@@ -366,19 +366,43 @@ namespace Schedule_Master
 
         public void EditTask(string title, int slotid)
         {
+            int id = 0;
             string sqlstr = "UPDATE tasks " +
                             "SET title = @title " +
-                            "WHERE slot_id = @id";
+                            $"WHERE slot_id = {slotid} " +
+                            "RETURNING id";
             using (var conn = new NpgsqlConnection(Program.ConnectionString))
             {
                 conn.Open();
                 using (var cmd = new NpgsqlCommand(sqlstr, conn))
                 {
                     cmd.Parameters.AddWithValue("title", title);
-                    cmd.Parameters.AddWithValue("id", slotid);
-                    cmd.ExecuteNonQuery();
+                    //
+                    var reader = cmd.ExecuteReader();
+                    reader.Read();
+                    id = (int)reader["id"];
                 }
             }
+            GetTaskByID(id).Update(title);
+        }
+
+        public void DeleteTask(int slotid)
+        {
+            int id = 0;
+            string sqlstr = "DELETE FROM tasks " +
+                            $"WHERE slot_id = {slotid} " +
+                            "RETURNING id";
+            using (var conn = new NpgsqlConnection(Program.ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand(sqlstr, conn))
+                {
+                    var reader = cmd.ExecuteReader();
+                    reader.Read();
+                    id = (int)reader["id"];
+                }
+            }
+            Tasks.Remove(GetTaskByID(id));
         }
 
         //-Other Functions---------------------------------------------------------------------------
