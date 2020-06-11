@@ -55,7 +55,10 @@ function addDay() {
                         );
                     if (newTask.length >= 3) {
                         document.querySelector(`[slotid="${slot.id}"]`).innerText = newTask;
-                        $.post("/Data/Task", { 'table': [newTask, slot.id] });
+                        $.post("/Data/Task", { 'table': [newTask, slot.id] })
+                            .done(function () {
+                                refreshSchedule(currSchedule);
+                        });
                     }
                 }
             });
@@ -64,6 +67,10 @@ function addDay() {
             i++;
         });
     });
+}
+
+function refreshSchedule(schedule) {
+    getColumnsOfSchedule(schedule.id);
 }
 
 function removeDay() {

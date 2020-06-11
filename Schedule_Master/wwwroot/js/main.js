@@ -50,7 +50,7 @@ function getMySchedules() {
             //scheduleDiv.dataset.currentSchedule = schedule.title;
             //console.log("clicked on " + schedule.title);
             currSchedule = schedule;
-            getColumnsOfSchedule(schedule.id);
+            refreshSchedule(schedule);
         });
 
         accordionMySchedules.appendChild(item);
